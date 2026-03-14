@@ -13,7 +13,7 @@ Az alkalmazás az alábbi funkciókat fogja megvalósíitani:
 - Könyvek keresése a felvettek között - Tiger Adrián
 - Új könyvek hozzáadása - Tiger Adrián
 - Könyvek rendezése különböző szempontok szerint - Borbély Bettina
-- Könyvek kedvencekhez adása - Borbély Bettina
+- Könyvek kedvencekhez adása - Nagy Márk
 
 ### Olvasás követése
 - Olvasott oldalak számának nyilvántartása - Borbély Bettina
