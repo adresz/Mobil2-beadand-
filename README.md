@@ -7,26 +7,26 @@ A projekt célja egy olyan rendszer megvalósítása, amely lehetővé teszi a k
 
 ## Funkcionális áttekintés
 
-Az alkalmazás az alábbi fő funkciókat támogatja vagy tervezi támogatni:
+Az alkalmazás az alábbi funkciókat fogja megvalósíitani:
 
 ### Könyvkezelés
-- Könyvek keresése
-- Új könyvek hozzáadása
-- Könyvek rendezése különböző szempontok szerint
-- Könyvek kedvencekhez adása
+- Könyvek keresése a felvettek között - Tiger Adrián
+- Új könyvek hozzáadása - Tiger Adrián
+- Könyvek rendezése különböző szempontok szerint - Borbély Bettina
+- Könyvek kedvencekhez adása - Borbély Bettina
 
 ### Olvasás követése
-- Olvasott oldalak számának nyilvántartása
-- Olvasási folyamat vizualizálása progress bar segítségével
-- Olvasás kezdési és befejezési dátumának rögzítése
-- Mérföldkövek teljesítmény alapján/progress alapján
+- Olvasott oldalak számának nyilvántartása - Borbély Bettina
+- Olvasási folyamat vizualizálása progress bar segítségével - Nagy Márk
+- Olvasás kezdési és befejezési dátumának rögzítése - Borbély Bettina
+- Mérföldkövek teljesítmény alapján/progress alapján - Tiger Adrián
 
 ### Értékelés
-- Könyvek értékelése, csillagokkal, illetve szöveges módon
+- Könyvek értékelése, csillagokkal, illetve szöveges módon - Nagy Márk
 
 ### Kölcsönzés
-- Könyv kölcsönadásának kezelése (időtartam megadásával)
-- Könyv kölcsönkapásának kezelése (időtartam megadásával)
+- Könyv kölcsönadásának kezelése (időtartam megadásával) - Tiger Adrián
+- Könyv kölcsönkapásának kezelése (időtartam megadásával) - Nagy Márk
 
 ---
 
