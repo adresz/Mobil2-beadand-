@@ -10,12 +10,11 @@ A projekt célja egy olyan rendszer megvalósítása, amely lehetővé teszi a k
 Az alkalmazás az alábbi funkciókat fogja megvalósíitani:
 
 ### Felhasználói felületek
--Főoldal: saját jelenleg olvasott könyvek, rövid adatok a könyvekről(cím szerző progressbar), illetve szűrés - Nagy Márk
--Összes felvitt könyvek(ott lehet kedvencekhez adni, keresni illetve szűrni) - Borbély Bettina
--Hozzáadás: Könyv hozzáadás/módosítás - Nagy Márk & Tiger Adrián
--Könyv részletes leírás(oldalak száma, értékeléseim, leírás hozzáadás, olvasott oldalak száma, mikor kezdtem és fejeztem be, kölcsönzés/saját könyv választási opció) - Tiger Adrián
-
-
+- Főoldal: saját jelenleg olvasott könyvek, rövid adatok a könyvekről (cím, szerző, progressbar), illetve szűrés - Nagy Márk
+- Összes felvitt könyvek (ott lehet kedvencekhez adni, keresni illetve szűrni) - Borbély Bettina
+- Hozzáadás: Könyv hozzáadás/módosítás - Nagy Márk & Tiger Adrián
+- Könyv részletes leírás (oldalak száma, értékeléseim, leírás hozzáadás, olvasott oldalak száma, mikor kezdtem és fejeztem be, kölcsönzés/saját könyv választási opció) - Tiger Adrián
+  
 ### Könyvkezelés
 - Könyvek keresése a felvettek között 
 - Új könyvek hozzáadása 
