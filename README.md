@@ -29,7 +29,6 @@ olvasott oldalak száma, mikor kezdtem és fejeztem be, kölcsönzés/saját kö
 - Olvasott oldalak számának nyilvántartása
 - Olvasási folyamat vizualizálása progress bar segítségével
 - Olvasás kezdési és befejezési dátumának rögzítése 
-- Mérföldkövek teljesítmény alapján/progress alapján 
 
 ### Értékelés
 - Könyvek értékelése, csillagokkal, illetve szöveges módon
