@@ -29,25 +29,11 @@
 
         <ImageView
             android:id="@+id/ivBookCover"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="140dp"
+            android:layout_height="180dp"
+            android:src="@drawable/ketarcu"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:srcCompat="@tools:sample/avatars" />
-
-        <EditText
-            android:id="@+id/etBookName"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginStart="20dp"
-            android:ems="10"
-            android:gravity="start"
-            android:hint="Könyv neve"
-            android:inputType="text"
-            app:layout_constraintBottom_toBottomOf="@+id/ivBookCover"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/ivBookCover"
-            app:layout_constraintTop_toTopOf="@+id/ivBookCover" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <RatingBar
             android:id="@+id/rbStarRating"
@@ -56,6 +42,45 @@
             android:layout_marginTop="30dp"
             app:layout_constraintStart_toStartOf="@+id/ivBookCover"
             app:layout_constraintTop_toBottomOf="@+id/ivBookCover" />
+
+        <TextView
+            android:id="@+id/tvBookName"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:gravity="center|top"
+            android:text="Én, a ketarcú"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@+id/ivBookCover"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/ivBookCover"
+            app:layout_constraintTop_toTopOf="@+id/ivBookCover" />
+
+        <TextView
+            android:id="@+id/tvMaxPages"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="30dp"
+            android:gravity="center|start"
+            android:text="/ 60 pages ( 90%)"
+            app:layout_constraintBottom_toBottomOf="@+id/editTextNumber"
+            app:layout_constraintEnd_toEndOf="@+id/rbStarRating"
+            app:layout_constraintStart_toEndOf="@+id/editTextNumber"
+            app:layout_constraintTop_toTopOf="@+id/editTextNumber" />
+
+        <EditText
+            android:id="@+id/editTextNumber"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="30dp"
+            android:ems="10"
+            android:inputType="number"
+            android:text="54"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rbStarRating" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
