@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">Konyv_nyilvantarto</string>
+
+
+
+    <string-array name="BookState">
+        <item>Vásárolt</item>
+        <item>Kölcsön vett</item>
+        <item>Kölcsön adott</item>
+    </string-array>
 </resources>
