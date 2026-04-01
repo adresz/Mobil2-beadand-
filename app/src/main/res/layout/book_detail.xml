@@ -36,13 +36,13 @@
             tools:srcCompat="@tools:sample/avatars" />
 
         <EditText
-            android:id="@+id/etDetailedOpinion"
+            android:id="@+id/etBookName"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginStart="20dp"
             android:ems="10"
             android:gravity="start"
-            android:hint="Könyv részletes "
+            android:hint="Könyv neve"
             android:inputType="text"
             app:layout_constraintBottom_toBottomOf="@+id/ivBookCover"
             app:layout_constraintEnd_toEndOf="parent"
