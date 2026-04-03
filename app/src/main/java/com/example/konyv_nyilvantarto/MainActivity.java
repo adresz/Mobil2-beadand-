@@ -21,13 +21,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.home);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.clHome), (v, insets) -> {
+        setContentView(R.layout.book_detail);
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.clMain), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-
+        /*
         RecyclerView recyclerView = findViewById(R.id.rvMyBooks);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         List<BookHome> bookList = new ArrayList<>();
@@ -38,5 +38,7 @@ public class MainActivity extends AppCompatActivity {
 
         BookAdapterHome adapter = new BookAdapterHome(bookList);
         recyclerView.setAdapter(adapter);
+        */
+
     }
 }
