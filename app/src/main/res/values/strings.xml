@@ -8,4 +8,12 @@
         <item>Kölcsön vett</item>
         <item>Kölcsön adott</item>
     </string-array>
+    <string-array name="HomeSpinner">
+        <item>Cím ↑</item>
+        <item>Cím ↓</item>
+        <item>Szerző ↑</item>
+        <item>Szerző ↓</item>
+        <item>Haladás ↑</item>
+        <item>Haladás ↓</item>
+    </string-array>
 </resources>
