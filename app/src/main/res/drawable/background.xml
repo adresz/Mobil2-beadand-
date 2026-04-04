@@ -1,0 +1,16 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+
+    <!-- Szaggatott vonal -->
+    <stroke
+        android:width="2dp"
+        android:color="#888888"
+        android:dashWidth="10dp"
+        android:dashGap="5dp"/>
+
+    <!-- Háttérszín (opcionális) -->
+    <solid android:color="#FFFFFF"/>
+
+    <!-- Sarkok lekerekítése (opcionális) -->
+    <corners android:radius="8dp"/>
+</shape>
