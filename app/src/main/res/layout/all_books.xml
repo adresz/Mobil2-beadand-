@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/clMainAll"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -16,17 +18,110 @@
         app:title="Összes könyv"
         app:titleCentered="true" />
 
+    <LinearLayout
+        android:id="@+id/linlayFilters"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/mtbHeader">
+
+        <Spinner
+            android:id="@+id/spFiltering"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+
+        <SearchView
+            android:id="@+id/svAll"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2" />
+    </LinearLayout>
+
     <ScrollView
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mtbHeader">
+        app:layout_constraintTop_toBottomOf="@id/linlayFilters"
+        app:layout_constraintVertical_bias="1.0">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clBodyAll"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+            <ImageButton
+                android:id="@+id/ibAddButtonAll2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.506"
+                app:layout_constraintStart_toEndOf="@+id/ivBookCoverAll2"
+                app:layout_constraintTop_toBottomOf="@+id/tvBookTitleAll2"
+                app:layout_constraintVertical_bias="0.0"
+                tools:srcCompat="@android:drawable/ic_input_add" />
+
+            <TextView
+                android:id="@+id/tvBookTitleAll2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="103dp"
+                android:text="Egri csillagok"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/ivBookCoverAll2"
+                app:layout_constraintTop_toBottomOf="@+id/ibAddButtonAll1" />
+
+            <ImageView
+                android:id="@+id/ivBookCoverAll1"
+                android:layout_width="140dp"
+                android:layout_height="180dp"
+                android:layout_marginTop="28dp"
+                android:src="@drawable/ketarcu"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/ivBookCoverAll2"
+                android:layout_width="140dp"
+                android:layout_height="180dp"
+                android:layout_marginTop="28dp"
+                android:src="@drawable/egricsillagok"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ivBookCoverAll1" />
+
+            <TextView
+                android:id="@+id/tvBookTitleAll1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="60dp"
+                android:text="Én, a kétarcú"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.522"
+                app:layout_constraintStart_toEndOf="@+id/ivBookCoverAll1"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageButton
+                android:id="@+id/ibAddButtonAll1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                app:layout_constraintBottom_toTopOf="@+id/tvBookTitleAll2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.506"
+                app:layout_constraintStart_toEndOf="@+id/ivBookCoverAll1"
+                app:layout_constraintTop_toBottomOf="@+id/tvBookTitleAll1"
+                app:layout_constraintVertical_bias="0.0"
+                tools:srcCompat="@android:drawable/ic_input_add" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 
