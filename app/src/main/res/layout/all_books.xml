@@ -27,18 +27,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/mtbHeader">
 
-        <Spinner
-            android:id="@+id/spFiltering"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
-
-
         <SearchView
             android:id="@+id/svAll"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="2" />
+
+        <Spinner
+            android:id="@+id/spFiltering"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:entries="@array/HomeSpinner"/>
+
+
     </LinearLayout>
 
     <ScrollView
@@ -67,7 +69,7 @@
                 app:layout_constraintStart_toEndOf="@+id/ivBookCoverAll2"
                 app:layout_constraintTop_toBottomOf="@+id/tvBookTitleAll2"
                 app:layout_constraintVertical_bias="0.0"
-                tools:srcCompat="@android:drawable/ic_input_add" />
+                app:srcCompat="@drawable/outline_add_24" />
 
             <TextView
                 android:id="@+id/tvBookTitleAll2"
@@ -121,7 +123,8 @@
                 app:layout_constraintStart_toEndOf="@+id/ivBookCoverAll1"
                 app:layout_constraintTop_toBottomOf="@+id/tvBookTitleAll1"
                 app:layout_constraintVertical_bias="0.0"
-                tools:srcCompat="@android:drawable/ic_input_add" />
+                app:srcCompat="@drawable/outline_add_24" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 
