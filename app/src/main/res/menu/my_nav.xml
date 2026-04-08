@@ -9,4 +9,7 @@
     <item
         android:id="@+id/addBooks"
         android:title="Könyv hozzáadása" />
+    <item
+        android:id="@+id/bookDetail"
+        android:title="Könyv részletes leírás" />
 </menu>
