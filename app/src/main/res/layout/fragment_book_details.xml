@@ -34,6 +34,31 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/clHeadD" />
+        app:layout_constraintTop_toBottomOf="@id/clHeadD" >
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clContentD"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="24dp">
+
+            <ImageView
+                android:id="@+id/ivBookCoverD"
+                android:src="@drawable/nopicture"
+                android:layout_width="140dp"
+                android:layout_height="180dp"/>
+
+            <LinearLayout
+                android:id="@+id/linlayInformation"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="24dp"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="@+id/ivBookCoverD"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/ivBookCoverD"
+                app:layout_constraintTop_toTopOf="@+id/ivBookCoverD"></LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
