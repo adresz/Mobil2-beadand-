@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/homeFragment"
+        android:title="Főoldal"/>
+    <item
+        android:id="@+id/AllBooks"
+        android:title="Összes könyv"/>
+    <item
+        android:id="@+id/addBooks"
+        android:title="Könyv hozzáadása" />
+</menu>
