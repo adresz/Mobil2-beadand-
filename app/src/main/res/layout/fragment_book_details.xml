@@ -188,7 +188,7 @@
                 android:id="@+id/tvBorrowUntilD"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Eddig"
+                android:text="Eddig:"
                 android:textSize="15sp"
                 app:layout_constraintBottom_toBottomOf="@+id/etBorrowDateD"
                 app:layout_constraintStart_toStartOf="parent"
@@ -211,7 +211,7 @@
                 android:id="@+id/tvStartD"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Kezdés"
+                android:text="Kezdés:"
                 android:textSize="15sp"
                 app:layout_constraintBottom_toBottomOf="@+id/etStartDateD"
                 app:layout_constraintStart_toStartOf="parent"
@@ -229,6 +229,29 @@
                 app:layout_constraintEnd_toEndOf="@+id/etBorrowDateD"
                 app:layout_constraintStart_toStartOf="@+id/etBorrowDateD"
                 app:layout_constraintTop_toBottomOf="@+id/etBorrowDateD" />
+
+            <TextView
+                android:id="@+id/tvEndDateD"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Befejezés:"
+                android:textSize="15sp"
+                app:layout_constraintBottom_toBottomOf="@+id/etEndDateD"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/etEndDateD" />
+
+            <EditText
+                android:id="@+id/etEndDateD"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="30dp"
+                android:drawableEnd="@android:drawable/ic_menu_my_calendar"
+                android:focusable="false"
+                android:hint="Dátum"
+                android:paddingHorizontal="12dp"
+                app:layout_constraintEnd_toEndOf="@+id/etStartDateD"
+                app:layout_constraintStart_toStartOf="@+id/etStartDateD"
+                app:layout_constraintTop_toBottomOf="@+id/etStartDateD" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
