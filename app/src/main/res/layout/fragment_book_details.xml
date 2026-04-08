@@ -44,9 +44,11 @@
 
             <ImageView
                 android:id="@+id/ivBookCoverD"
+                android:layout_width="160dp"
+                android:layout_height="240dp"
                 android:src="@drawable/nopicture"
-                android:layout_width="140dp"
-                android:layout_height="180dp"/>
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <LinearLayout
                 android:id="@+id/linlayInformation"
@@ -57,7 +59,51 @@
                 app:layout_constraintBottom_toBottomOf="@+id/ivBookCoverD"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/ivBookCoverD"
-                app:layout_constraintTop_toTopOf="@+id/ivBookCoverD"></LinearLayout>
+                app:layout_constraintTop_toTopOf="@+id/ivBookCoverD">
+
+                <EditText
+                    android:id="@+id/etBookTitleD"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="Könyv címe"
+                    android:inputType="text"
+                    android:minHeight="48dp" />
+
+                <EditText
+                    android:id="@+id/etAuthorD"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="Szerző"
+                    android:inputType="text"
+                    android:minHeight="48dp" />
+
+                <EditText
+                    android:id="@+id/etReleaseD"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="Megjelenés éve"
+                    android:inputType="number"
+                    android:minHeight="48dp" />
+
+                <EditText
+                    android:id="@+id/etGenreD"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="Műfaj"
+                    android:inputType="text" />
+
+                <EditText
+                    android:id="@+id/etPagesD"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="Oldalak száma"
+                    android:inputType="number" />
+            </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 
