@@ -6,4 +6,10 @@
     </style>
 
     <style name="Theme.Konyv_nyilvantarto" parent="Base.Theme.Konyv_nyilvantarto" />
+
+    <style name="HeadTitles">
+        <item name="android:textSize">30sp</item>
+        <item name="fontFamily">sans-serif-medium</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
 </resources>

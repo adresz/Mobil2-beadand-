@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/clMainD"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.BookDetailsFragment" >
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clHeadD"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tvTitleD"
+            style="@style/HeadTitles"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="XY könyv részletei"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ScrollView
+        android:id="@+id/svContentD"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/clHeadD" >
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clContentD"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="24dp">
+
+            <ImageView
+                android:id="@+id/ivBookCoverD"
+                android:layout_width="160dp"
+                android:layout_height="240dp"
+                android:src="@drawable/nopicture"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <LinearLayout
+                android:id="@+id/linlayInformation"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="24dp"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="@+id/ivBookCoverD"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/ivBookCoverD"
+                app:layout_constraintTop_toTopOf="@+id/ivBookCoverD">
+
+                <EditText
+                    android:id="@+id/etBookTitleD"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="Könyv címe"
+                    android:inputType="text"
+                    android:minHeight="48dp" />
+
+                <EditText
+                    android:id="@+id/etAuthorD"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="Szerző"
+                    android:inputType="text"
+                    android:minHeight="48dp" />
+
+                <EditText
+                    android:id="@+id/etReleaseD"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="Megjelenés éve"
+                    android:inputType="number"
+                    android:minHeight="48dp" />
+
+                <EditText
+                    android:id="@+id/etGenreD"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="Műfaj"
+                    android:inputType="text"
+                    android:minHeight="48dp" />
+
+                <EditText
+                    android:id="@+id/etPagesD"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="Oldalak száma"
+                    android:inputType="number"
+                    android:minHeight="48dp" />
+            </LinearLayout>
+
+            <RatingBar
+                android:id="@+id/rbStarRatingD"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ivBookCoverD" />
+
+            <TextView
+                android:id="@+id/tvPageProgressD"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="50dp"
+                android:text="Olvasott oldalak száma"
+                android:textSize="15sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/rbStarRatingD" />
+
+            <LinearLayout
+                android:id="@+id/linlayProgressD"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="@+id/rbStarRatingD"
+                app:layout_constraintStart_toStartOf="@+id/rbStarRatingD"
+                app:layout_constraintTop_toBottomOf="@+id/tvPageProgressD">
+
+                <EditText
+                    android:id="@+id/etReadPagesD"
+                    android:layout_width="60dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:inputType="number" />
+
+                <TextView
+                    android:id="@+id/tvPerD"
+                    android:layout_width="60dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="4"
+                    android:gravity="center"
+                    android:text="/"
+                    android:textSize="20sp" />
+
+                <EditText
+                    android:id="@+id/etMaxPagesD"
+                    android:layout_width="60dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:inputType="number" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tvStateD"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:text="Állapot:"
+                android:textSize="15sp"
+                app:layout_constraintBottom_toBottomOf="@+id/spStateD"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linlayProgressD" />
+
+            <Spinner
+                android:id="@+id/spStateD"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="40dp"
+                android:layout_marginTop="30dp"
+                android:minHeight="48dp"
+                app:layout_constraintEnd_toEndOf="@+id/linlayProgressD"
+                app:layout_constraintStart_toEndOf="@+id/tvStateD"
+                app:layout_constraintTop_toBottomOf="@+id/linlayProgressD" />
+
+            <TextView
+                android:id="@+id/tvBorrowUntilD"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Eddig:"
+                android:textSize="15sp"
+                app:layout_constraintBottom_toBottomOf="@+id/etBorrowDateD"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/etBorrowDateD" />
+
+            <EditText
+                android:id="@+id/etBorrowDateD"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="30dp"
+                android:drawableEnd="@android:drawable/ic_menu_my_calendar"
+                android:focusable="false"
+                android:hint="Dátum"
+                android:paddingHorizontal="12dp"
+                app:layout_constraintEnd_toEndOf="@+id/spStateD"
+                app:layout_constraintStart_toStartOf="@+id/spStateD"
+                app:layout_constraintTop_toBottomOf="@+id/spStateD" />
+
+            <TextView
+                android:id="@+id/tvStartD"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Kezdés:"
+                android:textSize="15sp"
+                app:layout_constraintBottom_toBottomOf="@+id/etStartDateD"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/etStartDateD" />
+
+            <EditText
+                android:id="@+id/etStartDateD"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="30dp"
+                android:drawableEnd="@android:drawable/ic_menu_my_calendar"
+                android:focusable="false"
+                android:hint="Dátum"
+                android:paddingHorizontal="12dp"
+                app:layout_constraintEnd_toEndOf="@+id/etBorrowDateD"
+                app:layout_constraintStart_toStartOf="@+id/etBorrowDateD"
+                app:layout_constraintTop_toBottomOf="@+id/etBorrowDateD" />
+
+            <TextView
+                android:id="@+id/tvEndDateD"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Befejezés:"
+                android:textSize="15sp"
+                app:layout_constraintBottom_toBottomOf="@+id/etEndDateD"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/etEndDateD" />
+
+            <EditText
+                android:id="@+id/etEndDateD"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="30dp"
+                android:drawableEnd="@android:drawable/ic_menu_my_calendar"
+                android:focusable="false"
+                android:hint="Dátum"
+                android:paddingHorizontal="12dp"
+                app:layout_constraintEnd_toEndOf="@+id/etStartDateD"
+                app:layout_constraintStart_toStartOf="@+id/etStartDateD"
+                app:layout_constraintTop_toBottomOf="@+id/etStartDateD" />
+
+            <TextView
+                android:id="@+id/tvOpinionD"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="50dp"
+                android:text="Vélemény:"
+                android:textSize="15sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvEndDateD" />
+
+            <EditText
+                android:id="@+id/etOpinionD"
+                android:layout_width="0dp"
+                android:layout_height="150dp"
+                android:layout_marginTop="15dp"
+                android:ems="10"
+                android:gravity="start|top"
+                android:inputType="textMultiLine"
+                android:textSize="15sp"
+                app:layout_constraintEnd_toEndOf="@+id/etEndDateD"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvOpinionD" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
