@@ -87,7 +87,55 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvAuthorAdd" />
 
-            
+            <LinearLayout
+                android:id="@+id/linlayNumsAdd"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/etAuthorAdd">
+
+                <TextView
+                    android:id="@+id/tvReleaseAdd"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Megjelenés éve:" />
+
+                <TextView
+                    android:id="@+id/tvPagesAdd"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="right"
+                    android:text="Oldalak száma:" />
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/etReleaseAdd"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:layout_weight="1"
+                android:ems="10"
+                android:inputType="number"
+                android:minHeight="48dp"
+                app:layout_constraintStart_toStartOf="@+id/linlayNumsAdd"
+                app:layout_constraintTop_toBottomOf="@+id/linlayNumsAdd" />
+
+            <EditText
+                android:id="@+id/etPagesAdd"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:layout_weight="1"
+                android:ems="10"
+                android:inputType="number"
+                android:minHeight="48dp"
+                app:layout_constraintEnd_toEndOf="@+id/linlayNumsAdd"
+                app:layout_constraintTop_toBottomOf="@+id/linlayNumsAdd" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
