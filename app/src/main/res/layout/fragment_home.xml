@@ -26,6 +26,31 @@
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clRecHome"
+        android:layout_width="409dp"
+        android:layout_height="649dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/clHeadHome">
 
+        <SearchView
+            android:id="@+id/swSearchHome"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toStartOf="@+id/spSortHome"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Spinner
+            android:id="@+id/spSortHome"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:entries="@array/HomeSpinner"
+            app:layout_constraintBottom_toBottomOf="@+id/swSearchHome"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/swSearchHome"
+            app:layout_constraintTop_toTopOf="@+id/swSearchHome" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
