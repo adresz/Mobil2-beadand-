@@ -52,5 +52,13 @@
             app:layout_constraintStart_toEndOf="@+id/swSearchHome"
             app:layout_constraintTop_toTopOf="@+id/swSearchHome" />
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvMyBooksHome"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/swSearchHome" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
