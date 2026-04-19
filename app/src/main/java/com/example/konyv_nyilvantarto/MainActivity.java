@@ -1,5 +1,6 @@
 package com.example.konyv_nyilvantarto;
 
+import android.app.appsearch.GetSchemaResponse;
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
@@ -7,8 +8,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
+import androidx.navigation.ui.NavigationUI;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,8 +31,18 @@ public class MainActivity extends AppCompatActivity {
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, 0);
+
             return insets;
         });
+
+        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.fcvContent);
+
+        NavController navController = navHostFragment.getNavController();
+
+        BottomNavigationView bottomNav = findViewById(R.id.bnvMain);
+
+        NavigationUI.setupWithNavController(bottomNav, navController);
         /*
         RecyclerView recyclerView = findViewById(R.id.rvMyBooks);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
