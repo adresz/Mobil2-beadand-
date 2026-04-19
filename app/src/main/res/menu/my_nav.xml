@@ -2,14 +2,15 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/homeFragment"
-        android:title="Főoldal"/>
-    <item
-        android:id="@+id/AllBooks"
-        android:title="Összes könyv"/>
+        android:title="Főoldal"
+        android:icon="@drawable/outline_home_24"/>
     <item
         android:id="@+id/addBooks"
-        android:title="Könyv hozzáadása" />
+        android:title="Új könyv"
+        android:icon="@drawable/outline_add_24"/>
     <item
-        android:id="@+id/bookDetail"
-        android:title="Könyv részletes leírás" />
+        android:id="@+id/AllBooks"
+        android:title="Összes könyv"
+        android:icon="@drawable/outline_book_4_24"/>
+
 </menu>
