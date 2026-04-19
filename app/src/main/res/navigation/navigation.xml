@@ -10,4 +10,18 @@
         android:name="com.example.konyv_nyilvantarto.fragments.BookDetailsFragment"
         android:label="fragment_book_details"
         tools:layout="@layout/fragment_book_details" />
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.konyv_nyilvantarto.fragments.HomeFragment"
+        android:label="HomeFragment" />
+    <fragment
+        android:id="@+id/addBooks"
+        android:name="com.example.konyv_nyilvantarto.fragments.AddBookFragment"
+        android:label="fragment_add_book"
+        tools:layout="@layout/fragment_add_book" />
+    <fragment
+        android:id="@+id/AllBooks"
+        android:name="com.example.konyv_nyilvantarto.fragments.AllBooksFragment"
+        android:label="fragment_all_books"
+        tools:layout="@layout/fragment_all_books" />
 </navigation>
