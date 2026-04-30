@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.SearchView;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.example.konyv_nyilvantarto.BookAdapterHome;
 import com.example.konyv_nyilvantarto.R;
@@ -47,6 +48,8 @@ public class HomeFragment extends Fragment {
     private List<BookItemHome> displayBookList;
     private Spinner spSortHome;
     private SearchView swSearchHome;
+
+    private TextView tvEmptySearchHome;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -107,6 +110,7 @@ public class HomeFragment extends Fragment {
         });
 
         swSearchHome = view.findViewById(R.id.swSearchHome);
+        tvEmptySearchHome = view.findViewById(R.id.tvEmptySearchHome);
 
         swSearchHome.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -121,6 +125,8 @@ public class HomeFragment extends Fragment {
                 return true;
             }
         });
+
+
     }
 
     private void loadBooksFromSupabase() {
@@ -287,6 +293,14 @@ public class HomeFragment extends Fragment {
             sortBooks(spSortHome.getSelectedItemPosition());
         } else if (bookAdapterHome != null) {
             bookAdapterHome.notifyDataSetChanged();
+        }
+
+        if (displayBookList.isEmpty()) {
+            tvEmptySearchHome.setVisibility(View.VISIBLE);
+            rvMyBooksHome.setVisibility(View.GONE);
+        } else {
+            tvEmptySearchHome.setVisibility(View.GONE);
+            rvMyBooksHome.setVisibility(View.VISIBLE);
         }
     }
 }
