@@ -8,9 +8,12 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.SparseIntArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.Spinner;
 
 import com.example.konyv_nyilvantarto.BookAdapterHome;
 import com.example.konyv_nyilvantarto.R;
@@ -20,6 +23,9 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import okhttp3.OkHttpClient;
@@ -37,6 +43,7 @@ public class HomeFragment extends Fragment {
     private RecyclerView rvMyBooksHome;
     private BookAdapterHome bookAdapterHome;
     private List<BookItemHome> bookList;
+    private Spinner spSortHome;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -79,6 +86,20 @@ public class HomeFragment extends Fragment {
         rvMyBooksHome.setAdapter(bookAdapterHome);
 
         loadBooksFromSupabase();
+
+        spSortHome = view.findViewById(R.id.spSortHome);
+
+        spSortHome.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                sortBooks(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 
     private void loadBooksFromSupabase() {
@@ -153,9 +174,79 @@ public class HomeFragment extends Fragment {
             getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
+
+                    if(spSortHome != null) {
+                        sortBooks(spSortHome.getSelectedItemPosition());
+                    }
+
                     bookAdapterHome.notifyDataSetChanged();
                 }
             });
+        }
+    }
+
+    private void sortBooks(int sortOptionPosition) {
+        if (bookList == null || bookList.isEmpty()) {
+            return;
+        }
+
+        switch (sortOptionPosition) {
+            case 0: // Cím ↑
+                Collections.sort(bookList, new Comparator<BookItemHome>() {
+                    @Override
+                    public int compare(BookItemHome b1, BookItemHome b2) {
+                        return b1.getBook_name().compareToIgnoreCase(b2.getBook_name());
+                    }
+                });
+                break;
+            case 1: // Cím ↓
+                Collections.sort(bookList, new Comparator<BookItemHome>() {
+                    @Override
+                    public int compare(BookItemHome b1, BookItemHome b2) {
+                        return b2.getBook_name().compareToIgnoreCase(b1.getBook_name());
+                    }
+                });
+                break;
+            case 2: // Szerző ↑
+                Collections.sort(bookList, new Comparator<BookItemHome>() {
+                    @Override
+                    public int compare(BookItemHome b1, BookItemHome b2) {
+                        return b1.getBook_author().compareToIgnoreCase(b2.getBook_author());
+                    }
+                });
+                break;
+            case 3: // Szerző ↓
+                Collections.sort(bookList, new Comparator<BookItemHome>() {
+                    @Override
+                    public int compare(BookItemHome b1, BookItemHome b2) {
+                        return b2.getBook_author().compareToIgnoreCase(b1.getBook_author());
+                    }
+                });
+                break;
+            case 4: // Haladás ↑
+                Collections.sort(bookList, new Comparator<BookItemHome>() {
+                    @Override
+                    public int compare(BookItemHome b1, BookItemHome b2) {
+                        float prog1 = b1.getMax_pages() > 0 ? (float) b1.getCurrent_page() / b1.getMax_pages() : 0f;
+                        float prog2 = b2.getMax_pages() > 0 ? (float) b2.getCurrent_page() / b2.getMax_pages() : 0f;
+                        return Float.compare(prog1, prog2);
+                    }
+                });
+                break;
+            case 5: // Haladás ↓
+                Collections.sort(bookList, new Comparator<BookItemHome>() {
+                    @Override
+                    public int compare(BookItemHome b1, BookItemHome b2) {
+                        float prog1 = b1.getMax_pages() > 0 ? (float) b1.getCurrent_page() / b1.getMax_pages() : 0f;
+                        float prog2 = b2.getMax_pages() > 0 ? (float) b2.getCurrent_page() / b2.getMax_pages() : 0f;
+                        return Float.compare(prog2, prog1);
+                    }
+                });
+                break;
+        }
+
+        if (bookAdapterHome != null) {
+            bookAdapterHome.notifyDataSetChanged();
         }
     }
 }
