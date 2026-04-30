@@ -8,7 +8,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/clHeadHome"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="80dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -26,10 +26,13 @@
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/clRecHome"
-        android:layout_width="409dp"
-        android:layout_height="649dp"
+    <LinearLayout
+        android:id="@+id/linlayFiltersHome"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingHorizontal="16dp"
+        android:gravity="center_vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/clHeadHome">
@@ -38,27 +41,27 @@
             android:id="@+id/swSearchHome"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintEnd_toStartOf="@+id/spSortHome"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_weight="1"
+            android:queryHint="Keresés..."
+            android:iconifiedByDefault="false" />
 
         <Spinner
             android:id="@+id/spSortHome"
             android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:entries="@array/HomeSpinner"
-            app:layout_constraintBottom_toBottomOf="@+id/swSearchHome"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/swSearchHome"
-            app:layout_constraintTop_toTopOf="@+id/swSearchHome" />
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:entries="@array/HomeSpinner" />
+    </LinearLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvMyBooksHome"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/swSearchHome" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvMyBooksHome"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:clipToPadding="false"
+        android:paddingBottom="90dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linlayFiltersHome" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
