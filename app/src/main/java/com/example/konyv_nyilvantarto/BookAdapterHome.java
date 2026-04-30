@@ -6,16 +6,18 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
+import com.example.konyv_nyilvantarto.model.BookItemHome;
 
 import java.util.List;
 
 public class BookAdapterHome extends RecyclerView.Adapter<BookAdapterHome.BookViewHolder>{
-    private List<BookHome> bookList;
+    private List<BookItemHome> bookList;
 
-    public BookAdapterHome(List<BookHome> bookList) {
+    public BookAdapterHome(List<BookItemHome> bookList) {
         this.bookList = bookList;
     }
 
@@ -28,17 +30,30 @@ public class BookAdapterHome extends RecyclerView.Adapter<BookAdapterHome.BookVi
 
     @Override
     public void onBindViewHolder(@NonNull BookViewHolder holder, int position) {
-        BookHome currentBook = bookList.get(position);
-        holder.tvTitle.setText(currentBook.getTitle());
-        holder.tvAuthor.setText("Szerző: " + currentBook.getAuthor());
-        holder.tvYear.setText("Kiadási év: " + currentBook.getYear());
-        holder.pbProgress.setProgress(currentBook.getProgress());
-        holder.ivBookCover.setImageResource(currentBook.getImageResId());
+        BookItemHome book = bookList.get(position);
+
+        holder.tvTitle.setText(book.getBook_name());
+        holder.tvAuthor.setText("Szerző: " + book.getBook_author());
+        if (book.getRelease_year() != null) {
+            java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy", java.util.Locale.getDefault());
+            String yearOnly = sdf.format(book.getRelease_year());
+            holder.tvYear.setText("Kiadási év: " + yearOnly);
+        } else {
+            holder.tvYear.setText("Kiadási év: Ismeretlen");
+        }
+
+        // ProgressBar beállítása
+        holder.pbProgress.setMax(book.getMax_pages());
+        holder.pbProgress.setProgress(book.getCurrent_page());
+
+        Glide.with(holder.itemView.getContext())
+                .load(book.getCover())
+                .into(holder.ivBookCover);
     }
 
     @Override
     public int getItemCount() {
-        return bookList.size();
+        return bookList != null ? bookList.size() : 0;
     }
 
     public static class BookViewHolder extends RecyclerView.ViewHolder {
