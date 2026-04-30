@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.SearchView;
 import android.widget.Spinner;
 
 import com.example.konyv_nyilvantarto.BookAdapterHome;
@@ -42,8 +43,10 @@ public class HomeFragment extends Fragment {
 
     private RecyclerView rvMyBooksHome;
     private BookAdapterHome bookAdapterHome;
-    private List<BookItemHome> bookList;
+    private List<BookItemHome> fullBookList;
+    private List<BookItemHome> displayBookList;
     private Spinner spSortHome;
+    private SearchView swSearchHome;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -81,8 +84,10 @@ public class HomeFragment extends Fragment {
         rvMyBooksHome = view.findViewById(R.id.rvMyBooksHome);
         rvMyBooksHome.setLayoutManager(new LinearLayoutManager(requireContext()));
 
-        bookList = new ArrayList<>();
-        bookAdapterHome = new BookAdapterHome(bookList);
+        fullBookList = new ArrayList<>();
+        displayBookList = new ArrayList<>();
+
+        bookAdapterHome = new BookAdapterHome(displayBookList);
         rvMyBooksHome.setAdapter(bookAdapterHome);
 
         loadBooksFromSupabase();
@@ -98,6 +103,22 @@ public class HomeFragment extends Fragment {
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
+            }
+        });
+
+        swSearchHome = view.findViewById(R.id.swSearchHome);
+
+        swSearchHome.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false; // Nem csinálunk semmit az Enter lenyomásakor
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                // Minden gépelt karakternél lefut a szűrés
+                filterBooks(newText);
+                return true;
             }
         });
     }
@@ -125,7 +146,7 @@ public class HomeFragment extends Fragment {
 
                         JSONArray jsonArray = new JSONArray(responseData);
 
-                        bookList.clear();
+                        fullBookList.clear();
 
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject bookObj = jsonArray.getJSONObject(i);
@@ -156,7 +177,7 @@ public class HomeFragment extends Fragment {
                                 item.setCurrent_page(0);
                             }
 
-                            bookList.add(item);
+                            fullBookList.add(item);
                         }
                         updateUI();
                     } else {
@@ -175,24 +196,21 @@ public class HomeFragment extends Fragment {
                 @Override
                 public void run() {
 
-                    if(spSortHome != null) {
-                        sortBooks(spSortHome.getSelectedItemPosition());
-                    }
-
-                    bookAdapterHome.notifyDataSetChanged();
+                    String currentQuery = swSearchHome != null ? swSearchHome.getQuery().toString() : "";
+                    filterBooks(currentQuery);
                 }
             });
         }
     }
 
     private void sortBooks(int sortOptionPosition) {
-        if (bookList == null || bookList.isEmpty()) {
+        if (displayBookList == null || displayBookList.isEmpty()) {
             return;
         }
 
         switch (sortOptionPosition) {
             case 0: // Cím ↑
-                Collections.sort(bookList, new Comparator<BookItemHome>() {
+                Collections.sort(displayBookList, new Comparator<BookItemHome>() {
                     @Override
                     public int compare(BookItemHome b1, BookItemHome b2) {
                         return b1.getBook_name().compareToIgnoreCase(b2.getBook_name());
@@ -200,7 +218,7 @@ public class HomeFragment extends Fragment {
                 });
                 break;
             case 1: // Cím ↓
-                Collections.sort(bookList, new Comparator<BookItemHome>() {
+                Collections.sort(displayBookList, new Comparator<BookItemHome>() {
                     @Override
                     public int compare(BookItemHome b1, BookItemHome b2) {
                         return b2.getBook_name().compareToIgnoreCase(b1.getBook_name());
@@ -208,7 +226,7 @@ public class HomeFragment extends Fragment {
                 });
                 break;
             case 2: // Szerző ↑
-                Collections.sort(bookList, new Comparator<BookItemHome>() {
+                Collections.sort(displayBookList, new Comparator<BookItemHome>() {
                     @Override
                     public int compare(BookItemHome b1, BookItemHome b2) {
                         return b1.getBook_author().compareToIgnoreCase(b2.getBook_author());
@@ -216,7 +234,7 @@ public class HomeFragment extends Fragment {
                 });
                 break;
             case 3: // Szerző ↓
-                Collections.sort(bookList, new Comparator<BookItemHome>() {
+                Collections.sort(displayBookList, new Comparator<BookItemHome>() {
                     @Override
                     public int compare(BookItemHome b1, BookItemHome b2) {
                         return b2.getBook_author().compareToIgnoreCase(b1.getBook_author());
@@ -224,7 +242,7 @@ public class HomeFragment extends Fragment {
                 });
                 break;
             case 4: // Haladás ↑
-                Collections.sort(bookList, new Comparator<BookItemHome>() {
+                Collections.sort(displayBookList, new Comparator<BookItemHome>() {
                     @Override
                     public int compare(BookItemHome b1, BookItemHome b2) {
                         float prog1 = b1.getMax_pages() > 0 ? (float) b1.getCurrent_page() / b1.getMax_pages() : 0f;
@@ -234,7 +252,7 @@ public class HomeFragment extends Fragment {
                 });
                 break;
             case 5: // Haladás ↓
-                Collections.sort(bookList, new Comparator<BookItemHome>() {
+                Collections.sort(displayBookList, new Comparator<BookItemHome>() {
                     @Override
                     public int compare(BookItemHome b1, BookItemHome b2) {
                         float prog1 = b1.getMax_pages() > 0 ? (float) b1.getCurrent_page() / b1.getMax_pages() : 0f;
@@ -246,6 +264,28 @@ public class HomeFragment extends Fragment {
         }
 
         if (bookAdapterHome != null) {
+            bookAdapterHome.notifyDataSetChanged();
+        }
+    }
+
+    private void filterBooks (String query) {
+        displayBookList.clear();
+
+        if (query == null || query.trim().isEmpty()) {
+            displayBookList.addAll(fullBookList);
+        } else {
+            String lowerCaseQuery = query.toLowerCase().trim();
+
+            for (BookItemHome book : fullBookList) {
+                if (book.getBook_name() != null && book.getBook_name().toLowerCase().contains(lowerCaseQuery)) {
+                    displayBookList.add(book);
+                }
+            }
+        }
+
+        if (spSortHome != null) {
+            sortBooks(spSortHome.getSelectedItemPosition());
+        } else if (bookAdapterHome != null) {
             bookAdapterHome.notifyDataSetChanged();
         }
     }
