@@ -1,0 +1,72 @@
+package com.example.konyv_nyilvantarto.model;
+
+import java.util.Date;
+
+public class BookItemHome {
+    private String book_name;
+    private String book_author;
+    private Date release_year;
+    private int max_pages;
+    private int current_page;
+    private String cover;
+
+    public BookItemHome() {
+    }
+
+    public BookItemHome(String book_name, String book_author, Date release_year, int max_pages, int current_page, String cover) {
+        this.book_name = book_name;
+        this.book_author = book_author;
+        this.release_year = release_year;
+        this.max_pages = max_pages;
+        this.current_page = current_page;
+        this.cover = cover;
+    }
+
+    public String getBook_name() {
+        return book_name;
+    }
+
+    public void setBook_name(String book_name) {
+        this.book_name = book_name;
+    }
+
+    public String getBook_author() {
+        return book_author;
+    }
+
+    public void setBook_author(String book_author) {
+        this.book_author = book_author;
+    }
+
+    public Date getRelease_year() {
+        return release_year;
+    }
+
+    public void setRelease_year(Date release_year) {
+        this.release_year = release_year;
+    }
+
+    public int getMax_pages() {
+        return max_pages;
+    }
+
+    public void setMax_pages(int max_pages) {
+        this.max_pages = max_pages;
+    }
+
+    public int getCurrent_page() {
+        return current_page;
+    }
+
+    public void setCurrent_page(int current_page) {
+        this.current_page = current_page;
+    }
+
+    public String getCover() {
+        return cover;
+    }
+
+    public void setCover(String cover) {
+        this.cover = cover;
+    }
+}
