@@ -18,6 +18,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.konyv_nyilvantarto.BookAdapterHome;
+import com.example.konyv_nyilvantarto.fragments.BookDetailsFragment;
 import com.example.konyv_nyilvantarto.R;
 import com.example.konyv_nyilvantarto.model.BookItemHome;
 
@@ -90,7 +91,36 @@ public class HomeFragment extends Fragment {
         fullBookList = new ArrayList<>();
         displayBookList = new ArrayList<>();
 
-        bookAdapterHome = new BookAdapterHome(displayBookList);
+        bookAdapterHome = new BookAdapterHome(displayBookList, book -> {
+
+            Bundle bundle = new Bundle();
+
+            bundle.putString("title", book.getBook_name());
+            bundle.putString("author", book.getBook_author());
+            bundle.putString("cover", book.getCover());
+            bundle.putString("genre", book.getGenre());
+
+            if(book.getRelease_year() != null){
+                java.text.SimpleDateFormat sdf =
+                        new java.text.SimpleDateFormat("yyyy", java.util.Locale.getDefault());
+
+                bundle.putString("year", sdf.format(book.getRelease_year()));
+            }
+
+            bundle.putInt("maxPages", book.getMax_pages());
+            bundle.putInt("currentPages", book.getCurrent_page());
+
+            BookDetailsFragment fragment = new BookDetailsFragment();
+            fragment.setArguments(bundle);
+
+            requireActivity()
+                    .getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fcvContent, fragment)
+                    .addToBackStack(null)
+                    .commit();
+        });
+
         rvMyBooksHome.setAdapter(bookAdapterHome);
 
         loadBooksFromSupabase();
@@ -136,7 +166,7 @@ public class HomeFragment extends Fragment {
                 try {
                     OkHttpClient client = new OkHttpClient();
 
-                    String supabaseUrl = "https://plohvgiccntmsgzyszrl.supabase.co/rest/v1/Book_Details?select=id,book_name,book_author,release_year,max_pages,cover,Book_Progress(current_page)";
+                    String supabaseUrl = "https://plohvgiccntmsgzyszrl.supabase.co/rest/v1/Book_Details?select=id,book_name,book_author,genre,release_year,max_pages,cover,Book_Progress(current_page)";
                     String apiKey = "sb_publishable_cuiKHkTKKdAHSnMkBcwghQ_rKE7skpG";
 
                     Request request = new Request.Builder()
@@ -160,6 +190,7 @@ public class HomeFragment extends Fragment {
                             BookItemHome item = new BookItemHome();
                             item.setBook_name(bookObj.optString("book_name", "Ismeretlen cím"));
                             item.setBook_author(bookObj.optString("book_author", "Ismeretlen szerző"));
+                            item.setGenre(bookObj.optString("genre","Ismeretlen"));
 
                             String dateStr = bookObj.optString("release_year", "");
                             if (!dateStr.isEmpty()) {
