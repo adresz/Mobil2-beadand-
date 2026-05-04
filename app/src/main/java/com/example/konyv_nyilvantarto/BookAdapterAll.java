@@ -8,11 +8,21 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
+import com.example.konyv_nyilvantarto.fragments.FavoriteBook;
+
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class BookAdapterAll extends RecyclerView.Adapter<BookAdapterAll.BookViewHolder> {
 
-    private List<BookAll> bookList;
+    private final List<BookAll> bookList;
+    private static final String SUPABASE_URL = "https://plohvgiccntmsgzyszrl.supabase.co/";
+    private static final String API_KEY = "sb_publishable_cuiKHkTKKdAHSnMkBcwghQ_rKE7skpG";
 
     public BookAdapterAll(List<BookAll> bookList) {
         this.bookList = bookList;
@@ -29,31 +39,64 @@ public class BookAdapterAll extends RecyclerView.Adapter<BookAdapterAll.BookView
     public void onBindViewHolder(@NonNull BookViewHolder holder, int position) {
         BookAll currentBook = bookList.get(position);
 
-        holder.tvTitle.setText(currentBook.getTitle());
-        holder.tvAuthor.setText(currentBook.getAuthor());
-        holder.ivCover.setImageResource(currentBook.getImageResource());
+        holder.tvRowTitle.setText(currentBook.getTitle());
+        holder.tvRowAuthor.setText(currentBook.getFirstAuthor());
 
-        holder.ibAdd.setOnClickListener(v -> {
-            Toast.makeText(v.getContext(), currentBook.getTitle() + " hozzáadva a kedvencekhez!", Toast.LENGTH_SHORT).show();
+        Glide.with(holder.ivRowCover.getContext())
+                .load(currentBook.getCoverUrl())
+                .placeholder(R.drawable.nopicture)
+                .error(R.drawable.nopicture)
+                .into(holder.ivRowCover);
+
+        holder.ibRowAddFavorite.setOnClickListener(v -> {
+            holder.ibRowAddFavorite.setEnabled(false);
+            FavoriteBook fav = new FavoriteBook(
+                    currentBook.getTitle(),
+                    currentBook.getFirstAuthor(),
+                    currentBook.getCoverUrl(),
+                    currentBook.getPageCount(),
+                    currentBook.getReleaseYear(),
+                    currentBook.getGenre()
+            );
+
+            BookApi api = RetrofitClient.getClient(SUPABASE_URL).create(BookApi.class);
+            api.saveBookToSupabase(API_KEY, "Bearer " + API_KEY, fav)
+                    .enqueue(new Callback<Void>() {
+                        @Override
+                        public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
+                            holder.ibRowAddFavorite.setEnabled(true);
+                            if (response.isSuccessful()) {
+                                Toast.makeText(v.getContext(), "Sikeresen mentve a könyveidhez!", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(v.getContext(), "Hiba: " + response.code(), Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
+                            holder.ibRowAddFavorite.setEnabled(true);
+                            Toast.makeText(v.getContext(), "Hálózati hiba!", Toast.LENGTH_SHORT).show();
+                        }
+                    });
         });
     }
 
     @Override
     public int getItemCount() {
-        return bookList.size();
+        return (bookList != null) ? bookList.size() : 0;
     }
 
     public static class BookViewHolder extends RecyclerView.ViewHolder {
-        ImageView ivCover;
-        TextView tvTitle, tvAuthor;
-        ImageButton ibAdd;
+        final TextView tvRowTitle, tvRowAuthor;
+        final ImageView ivRowCover;
+        final ImageButton ibRowAddFavorite;
 
         public BookViewHolder(@NonNull View itemView) {
             super(itemView);
-            ivCover = itemView.findViewById(R.id.ivRowCover);
-            tvTitle = itemView.findViewById(R.id.tvRowTitle);
-            tvAuthor = itemView.findViewById(R.id.tvRowAuthor);
-            ibAdd = itemView.findViewById(R.id.ibRowAddFavorite);
+            tvRowTitle = itemView.findViewById(R.id.tvRowTitle);
+            tvRowAuthor = itemView.findViewById(R.id.tvRowAuthor);
+            ivRowCover = itemView.findViewById(R.id.ivRowCover);
+            ibRowAddFavorite = itemView.findViewById(R.id.ibRowAddFavorite);
         }
     }
 }
