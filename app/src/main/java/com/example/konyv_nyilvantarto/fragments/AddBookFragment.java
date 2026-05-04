@@ -109,7 +109,11 @@ public class AddBookFragment extends Fragment {
                                            Response<Void> response) {
 
                         if(response.isSuccessful()) {
-
+                            etTitleAdd.setText("");
+                            etAuthorAdd.setText("");
+                            etReleaseAdd.setText("");
+                            etPagesAdd.setText("");
+                            etGenreAdd.setText("");
                             Toast.makeText(getContext(),
                                     "Mentve!",
                                     Toast.LENGTH_SHORT).show();
