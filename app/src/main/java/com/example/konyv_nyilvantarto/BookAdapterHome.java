@@ -16,6 +16,16 @@ import java.util.List;
 
 public class BookAdapterHome extends RecyclerView.Adapter<BookAdapterHome.BookViewHolder>{
     private List<BookItemHome> bookList;
+    private OnBookClickListener listener;
+
+    public interface OnBookClickListener{
+        void onBookClick(BookItemHome book);
+    }
+
+    public BookAdapterHome(List<BookItemHome> bookList, OnBookClickListener listener) {
+        this.bookList = bookList;
+        this.listener = listener;
+    }
 
     public BookAdapterHome(List<BookItemHome> bookList) {
         this.bookList = bookList;
@@ -49,6 +59,10 @@ public class BookAdapterHome extends RecyclerView.Adapter<BookAdapterHome.BookVi
         Glide.with(holder.itemView.getContext())
                 .load(book.getCover())
                 .into(holder.ivBookCover);
+
+        holder.itemView.setOnClickListener(v -> {
+            listener.onBookClick(book);
+        });
     }
 
     @Override
