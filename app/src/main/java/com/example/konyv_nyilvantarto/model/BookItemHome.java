@@ -9,17 +9,19 @@ public class BookItemHome {
     private int max_pages;
     private int current_page;
     private String cover;
+    private String genre;
 
     public BookItemHome() {
     }
 
-    public BookItemHome(String book_name, String book_author, Date release_year, int max_pages, int current_page, String cover) {
+    public BookItemHome(String book_name, String book_author, Date release_year, int max_pages, int current_page, String cover, String genre) {
         this.book_name = book_name;
         this.book_author = book_author;
         this.release_year = release_year;
         this.max_pages = max_pages;
         this.current_page = current_page;
         this.cover = cover;
+        this.genre = genre;
     }
 
     public String getBook_name() {
@@ -69,4 +71,12 @@ public class BookItemHome {
     public void setCover(String cover) {
         this.cover = cover;
     }
+    public String getGenre() {
+        return genre;
+    }
+
+    public void setGenre(String genre) {
+        this.genre = genre;
+    }
+
 }
