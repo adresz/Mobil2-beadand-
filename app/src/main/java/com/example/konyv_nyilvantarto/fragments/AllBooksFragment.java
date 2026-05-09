@@ -32,6 +32,7 @@ public class AllBooksFragment extends Fragment {
 
     private BookAdapterAll adapter;
     private List<BookAll> bookList = new ArrayList<>();
+    private List<BookAll> fullBookList = new ArrayList<>();
     private SearchView searchView;
     private Spinner filterSpinner;
 
@@ -57,50 +58,113 @@ public class AllBooksFragment extends Fragment {
     }
 
     private void fetchBooksFromOpenLibrary(String query) {
-        // Cleaning up: Move API creation logic if possible, or keep it simple here
         BookApi api = RetrofitClient.getClient("https://openlibrary.org/").create(BookApi.class);
 
         api.searchBooks(query).enqueue(new Callback<OpenLibraryResponse>() {
             @Override
             public void onResponse(Call<OpenLibraryResponse> call, Response<OpenLibraryResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    bookList.clear();
                     List<BookAll> fetchedBooks = response.body().getDocs();
                     if (fetchedBooks != null) {
+                        fullBookList.clear();
+                        fullBookList.addAll(fetchedBooks);
+
+                        bookList.clear();
                         bookList.addAll(fetchedBooks);
+
+                        adapter.notifyDataSetChanged();
                     }
-                    adapter.notifyDataSetChanged();
                 }
             }
 
             @Override
             public void onFailure(Call<OpenLibraryResponse> call, Throwable t) {
-                if (isAdded()) { // Prevents crash if user leaves fragment during load
-                    Toast.makeText(getContext(), "Network Failure!", Toast.LENGTH_SHORT).show();
+                if (isAdded()) {
+                    Toast.makeText(getContext(), "Hiba történt!", Toast.LENGTH_SHORT).show();
                 }
             }
         });
     }
 
-    private void setupSpinner() {
-        ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(requireContext(),
-                R.array.HomeSpinner, android.R.layout.simple_spinner_item);
-        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        filterSpinner.setAdapter(spinnerAdapter);
-    }
 
     private void setupSearch() {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                if (!query.isEmpty()) {
+                if (query != null && !query.trim().isEmpty()) {
                     fetchBooksFromOpenLibrary(query);
-                    searchView.clearFocus(); // Closes the keyboard
+                } else {
+                    fetchBooksFromOpenLibrary("subject:fiction");
+                }
+                searchView.clearFocus();
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if (newText == null || newText.trim().isEmpty()) {
+                    fetchBooksFromOpenLibrary("subject:fiction");
+                } else {
+                    filterBooks(newText);
                 }
                 return true;
             }
+        });
+    }
+
+    private void filterBooks(String query) {
+        bookList.clear();
+        if (query == null || query.trim().isEmpty()) {
+            bookList.addAll(fullBookList);
+        } else {
+            String lowerCaseQuery = query.toLowerCase().trim();
+            for (BookAll book : fullBookList) {
+                if (book.getTitle() != null && book.getTitle().toLowerCase().contains(lowerCaseQuery)) {
+                    bookList.add(book);
+                }
+            }
+        }
+
+        sortBooks(filterSpinner.getSelectedItemPosition());
+    }
+
+    private void sortBooks(int sortOptionPosition) {
+        if (bookList == null || bookList.isEmpty()) return;
+
+        switch (sortOptionPosition) {
+            case 0: // Cím szerint növekvő
+                bookList.sort((b1, b2) -> b1.getTitle().compareToIgnoreCase(b2.getTitle()));
+                break;
+            case 1: // Cím szerint csökkenő
+                bookList.sort((b1, b2) -> b2.getTitle().compareToIgnoreCase(b1.getTitle()));
+                break;
+            case 2: // Szerző szerint növekvő
+                bookList.sort((b1, b2) -> b1.getFirstAuthor().compareToIgnoreCase(b2.getFirstAuthor()));
+                break;
+            case 3: // Szerző szerint csökkenő
+                bookList.sort((b1, b2) -> b2.getFirstAuthor().compareToIgnoreCase(b1.getFirstAuthor()));
+                break;
+        }
+        adapter.notifyDataSetChanged();
+    }
+
+    private void setupSpinner() {
+        ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(requireContext(),
+                R.array.AllBooksSortArray, android.R.layout.simple_spinner_item);
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        filterSpinner.setAdapter(spinnerAdapter);
+
+        filterSpinner.setOnItemSelectedListener(new android.widget.AdapterView.OnItemSelectedListener() {
             @Override
-            public boolean onQueryTextChange(String newText) { return false; }
+            public void onItemSelected(android.widget.AdapterView<?> parent, View view, int position, long id) {
+                sortBooks(position);
+            }
+
+            @Override
+            public void onNothingSelected(android.widget.AdapterView<?> parent) {
+            }
         });
     }
 }
+
+

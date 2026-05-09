@@ -16,10 +16,10 @@ public class BookAll {
     @SerializedName("number_of_pages_median")
     private int pageCount;
 
-    @SerializedName("created")
-    private CreatedInfo created;
+    @SerializedName("first_publish_year")
+    private Integer firstPublishYear;
 
-    @SerializedName("subjects")
+    @SerializedName("subject")
     private List<String> subjects;
 
     public String getTitle() {
@@ -45,12 +45,10 @@ public class BookAll {
     }
 
     public String getReleaseYear() {
-        if (created != null && created.value != null) {
-            // The value is "2016-08-11T18:54:46.688344"
-            // We just need the first 4 characters: "2016"
-            return created.value.substring(0, 4);
+        if (firstPublishYear != null) {
+            return String.valueOf(firstPublishYear);
         }
-        return "2016"; // Default for Cursed Child
+        return "2016";
     }
 
     // Inner class to handle the nested JSON structure of 'created'
@@ -61,8 +59,8 @@ public class BookAll {
 
     public String getGenre() {
         if (subjects != null && !subjects.isEmpty()) {
-            return subjects.get(0); // This will return "Drama" from your JSON
+            return subjects.get(0);
         }
-        return "Nincs megadva";
+        return "Fiction";
     }
 }
