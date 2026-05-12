@@ -19,13 +19,30 @@
         android:orientation="vertical"
         android:paddingStart="12dp">
 
-        <TextView
-            android:id="@+id/tvTitle"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:text="Én, a kéteracú" />
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/tvTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:text="Én, a kéteracú" />
+
+            <ImageButton
+                android:id="@+id/btnDelete"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="@drawable/bg_red_circle"
+                android:src="@drawable/baseline_delete_24"
+                app:tint="@color/white"
+                android:padding="6dp"
+                android:elevation="4dp" />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/tvAuthor"
@@ -49,5 +66,6 @@
             android:max="100"
             android:progress="90"
             android:progressTint="@color/green" />
+
     </LinearLayout>
 </LinearLayout>
