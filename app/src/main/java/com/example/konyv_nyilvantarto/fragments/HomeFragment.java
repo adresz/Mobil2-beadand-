@@ -1,5 +1,6 @@
 package com.example.konyv_nyilvantarto.fragments;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -91,34 +92,48 @@ public class HomeFragment extends Fragment {
         fullBookList = new ArrayList<>();
         displayBookList = new ArrayList<>();
 
-        bookAdapterHome = new BookAdapterHome(displayBookList, book -> {
+        bookAdapterHome = new BookAdapterHome(displayBookList, new BookAdapterHome.OnBookClickListener() {
+            @Override
+            public void onBookClick(BookItemHome book) {
+                Bundle bundle = new Bundle();
 
-            Bundle bundle = new Bundle();
+                bundle.putString("title", book.getBook_name());
+                bundle.putString("author", book.getBook_author());
+                bundle.putString("cover", book.getCover());
+                bundle.putString("genre", book.getGenre());
 
-            bundle.putString("title", book.getBook_name());
-            bundle.putString("author", book.getBook_author());
-            bundle.putString("cover", book.getCover());
-            bundle.putString("genre", book.getGenre());
+                if(book.getRelease_year() != null){
+                    java.text.SimpleDateFormat sdf =
+                            new java.text.SimpleDateFormat("yyyy", java.util.Locale.getDefault());
 
-            if(book.getRelease_year() != null){
-                java.text.SimpleDateFormat sdf =
-                        new java.text.SimpleDateFormat("yyyy", java.util.Locale.getDefault());
+                    bundle.putString("year", sdf.format(book.getRelease_year()));
+                }
 
-                bundle.putString("year", sdf.format(book.getRelease_year()));
+                bundle.putInt("maxPages", book.getMax_pages());
+                bundle.putInt("currentPages", book.getCurrent_page());
+
+                BookDetailsFragment fragment = new BookDetailsFragment();
+                fragment.setArguments(bundle);
+
+                requireActivity()
+                        .getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.fcvContent, fragment)
+                        .addToBackStack(null)
+                        .commit();
             }
-
-            bundle.putInt("maxPages", book.getMax_pages());
-            bundle.putInt("currentPages", book.getCurrent_page());
-
-            BookDetailsFragment fragment = new BookDetailsFragment();
-            fragment.setArguments(bundle);
-
-            requireActivity()
-                    .getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.fcvContent, fragment)
-                    .addToBackStack(null)
-                    .commit();
+            
+            @Override
+            public void onDeleteClick(BookItemHome book, int position) {
+                new AlertDialog.Builder(requireContext())
+                        .setTitle("Törlés megerősítése")
+                        .setMessage("Biztosan törölni szeretnéd a(z)" + book.getBook_name() + "című könyvet? Törlés esetén a hozzá tartozó összes adat elveszik.")
+                        .setPositiveButton("Törlés", (dialog, which) -> {
+                            deleteBook(book, position);
+                        })
+                        .setNegativeButton("Mégse", null)
+                        .show();
+            }
         });
 
         rvMyBooksHome.setAdapter(bookAdapterHome);
