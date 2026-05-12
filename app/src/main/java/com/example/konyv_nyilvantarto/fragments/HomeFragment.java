@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,11 +18,13 @@ import android.widget.AdapterView;
 import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.konyv_nyilvantarto.BookAdapterHome;
 import com.example.konyv_nyilvantarto.fragments.BookDetailsFragment;
 import com.example.konyv_nyilvantarto.R;
 import com.example.konyv_nyilvantarto.model.BookItemHome;
+import com.example.konyv_nyilvantarto.utils.Constants;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -122,12 +125,19 @@ public class HomeFragment extends Fragment {
                         .addToBackStack(null)
                         .commit();
             }
-            
+
             @Override
             public void onDeleteClick(BookItemHome book, int position) {
+                android.graphics.drawable.Drawable alertIcon = androidx.core.content.ContextCompat.getDrawable(requireContext(), android.R.drawable.ic_dialog_alert);
+
+                if (alertIcon != null) {
+                    alertIcon.mutate().setTint(android.graphics.Color.RED);
+                }
+
                 new AlertDialog.Builder(requireContext())
                         .setTitle("Törlés megerősítése")
-                        .setMessage("Biztosan törölni szeretnéd a(z)" + book.getBook_name() + "című könyvet? Törlés esetén a hozzá tartozó összes adat elveszik.")
+                        .setIcon(alertIcon)
+                        .setMessage("Biztosan törölni szeretnéd a(z) " + book.getBook_name() + " című könyvet? Törlés esetén a hozzá tartozó összes adat elveszik.")
                         .setPositiveButton("Törlés", (dialog, which) -> {
                             deleteBook(book, position);
                         })
@@ -170,8 +180,6 @@ public class HomeFragment extends Fragment {
                 return true;
             }
         });
-
-
     }
 
     private void loadBooksFromSupabase() {
@@ -181,13 +189,12 @@ public class HomeFragment extends Fragment {
                 try {
                     OkHttpClient client = new OkHttpClient();
 
-                    String supabaseUrl = "https://plohvgiccntmsgzyszrl.supabase.co/rest/v1/Book_Details?select=id,book_name,book_author,genre,release_year,max_pages,cover,Book_Progress(current_page)";
-                    String apiKey = "sb_publishable_cuiKHkTKKdAHSnMkBcwghQ_rKE7skpG";
+                    String supabaseUrl = Constants.SUPABASE_BASE_URL + "Book_Details?select=id,book_name,book_author,genre,release_year,max_pages,cover,Book_Progress(current_page)";
 
                     Request request = new Request.Builder()
                             .url(supabaseUrl)
-                            .addHeader("apikey", apiKey)
-                            .addHeader("Authorization", "Bearer " + apiKey)
+                            .addHeader("apikey", Constants.SUPABASE_API_KEY)
+                            .addHeader("Authorization", "Bearer " + Constants.SUPABASE_API_KEY)
                             .build();
 
                     Response response = client.newCall(request).execute();
@@ -201,8 +208,8 @@ public class HomeFragment extends Fragment {
 
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject bookObj = jsonArray.getJSONObject(i);
-
                             BookItemHome item = new BookItemHome();
+                            item.setId(bookObj.optLong("id"));
                             item.setBook_name(bookObj.optString("book_name", "Ismeretlen cím"));
                             item.setBook_author(bookObj.optString("book_author", "Ismeretlen szerző"));
                             item.setGenre(bookObj.optString("genre","Ismeretlen"));
@@ -348,5 +355,54 @@ public class HomeFragment extends Fragment {
             tvEmptySearchHome.setVisibility(View.GONE);
             rvMyBooksHome.setVisibility(View.VISIBLE);
         }
+    }
+
+    private void deleteBook(BookItemHome book, int position){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    OkHttpClient client = new OkHttpClient();
+
+                    String supabaseUrl = Constants.SUPABASE_BASE_URL + "Book_Details?id=eq." + book.getId();
+
+                    Request request = new Request.Builder()
+                            .url(supabaseUrl)
+                            .addHeader("apikey", Constants.SUPABASE_API_KEY)
+                            .addHeader("Authorization", "Bearer" + Constants.SUPABASE_API_KEY)
+                            .delete()
+                            .build();
+
+                    Response response = client.newCall(request).execute();
+
+                    if (response.isSuccessful()) {
+                        if (getActivity() != null) {
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    fullBookList.remove(book);
+                                    displayBookList.remove(position);
+                                    bookAdapterHome.notifyItemRemoved(position);
+                                    bookAdapterHome.notifyItemRangeChanged(position, displayBookList.size());
+
+                                    Toast.makeText(requireContext(), "Könyv sikeresen törölve!", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
+                    } else {
+                        if (getActivity() != null) {
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(requireContext(), "Sikertelen törlés!", Toast.LENGTH_LONG).show();
+                                }
+                            });
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
 }
