@@ -1,0 +1,8 @@
+<resources>
+    <string-array name="AllBooksSortArray">
+    <item>Cím (A-Z)</item>
+    <item>Cím (Z-A)</item>
+    <item>Szerző (A-Z)</item>
+    <item>Szerző (Z-A)</item>
+</string-array>
+</resources>
