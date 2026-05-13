@@ -1,9 +1,11 @@
 package com.example.konyv_nyilvantarto.fragments;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,11 +18,13 @@ import android.widget.AdapterView;
 import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.konyv_nyilvantarto.BookAdapterHome;
 import com.example.konyv_nyilvantarto.fragments.BookDetailsFragment;
 import com.example.konyv_nyilvantarto.R;
 import com.example.konyv_nyilvantarto.model.BookItemHome;
+import com.example.konyv_nyilvantarto.utils.Constants;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -91,34 +95,55 @@ public class HomeFragment extends Fragment {
         fullBookList = new ArrayList<>();
         displayBookList = new ArrayList<>();
 
-        bookAdapterHome = new BookAdapterHome(displayBookList, book -> {
+        bookAdapterHome = new BookAdapterHome(displayBookList, new BookAdapterHome.OnBookClickListener() {
+            @Override
+            public void onBookClick(BookItemHome book) {
+                Bundle bundle = new Bundle();
 
-            Bundle bundle = new Bundle();
+                bundle.putString("title", book.getBook_name());
+                bundle.putString("author", book.getBook_author());
+                bundle.putString("cover", book.getCover());
+                bundle.putString("genre", book.getGenre());
 
-            bundle.putString("title", book.getBook_name());
-            bundle.putString("author", book.getBook_author());
-            bundle.putString("cover", book.getCover());
-            bundle.putString("genre", book.getGenre());
+                if(book.getRelease_year() != null){
+                    java.text.SimpleDateFormat sdf =
+                            new java.text.SimpleDateFormat("yyyy", java.util.Locale.getDefault());
 
-            if(book.getRelease_year() != null){
-                java.text.SimpleDateFormat sdf =
-                        new java.text.SimpleDateFormat("yyyy", java.util.Locale.getDefault());
+                    bundle.putString("year", sdf.format(book.getRelease_year()));
+                }
 
-                bundle.putString("year", sdf.format(book.getRelease_year()));
+                bundle.putInt("maxPages", book.getMax_pages());
+                bundle.putInt("currentPages", book.getCurrent_page());
+
+                BookDetailsFragment fragment = new BookDetailsFragment();
+                fragment.setArguments(bundle);
+
+                requireActivity()
+                        .getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.fcvContent, fragment)
+                        .addToBackStack(null)
+                        .commit();
             }
 
-            bundle.putInt("maxPages", book.getMax_pages());
-            bundle.putInt("currentPages", book.getCurrent_page());
+            @Override
+            public void onDeleteClick(BookItemHome book, int position) {
+                android.graphics.drawable.Drawable alertIcon = androidx.core.content.ContextCompat.getDrawable(requireContext(), android.R.drawable.ic_dialog_alert);
 
-            BookDetailsFragment fragment = new BookDetailsFragment();
-            fragment.setArguments(bundle);
+                if (alertIcon != null) {
+                    alertIcon.mutate().setTint(android.graphics.Color.RED);
+                }
 
-            requireActivity()
-                    .getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.fcvContent, fragment)
-                    .addToBackStack(null)
-                    .commit();
+                new AlertDialog.Builder(requireContext())
+                        .setTitle("Törlés megerősítése")
+                        .setIcon(alertIcon)
+                        .setMessage("Biztosan törölni szeretnéd a(z) " + book.getBook_name() + " című könyvet? Törlés esetén a hozzá tartozó összes adat elveszik.")
+                        .setPositiveButton("Törlés", (dialog, which) -> {
+                            deleteBook(book, position);
+                        })
+                        .setNegativeButton("Mégse", null)
+                        .show();
+            }
         });
 
         rvMyBooksHome.setAdapter(bookAdapterHome);
@@ -155,8 +180,6 @@ public class HomeFragment extends Fragment {
                 return true;
             }
         });
-
-
     }
 
     private void loadBooksFromSupabase() {
@@ -166,13 +189,12 @@ public class HomeFragment extends Fragment {
                 try {
                     OkHttpClient client = new OkHttpClient();
 
-                    String supabaseUrl = "https://plohvgiccntmsgzyszrl.supabase.co/rest/v1/Book_Details?select=id,book_name,book_author,genre,release_year,max_pages,cover,Book_Progress(current_page)";
-                    String apiKey = "sb_publishable_cuiKHkTKKdAHSnMkBcwghQ_rKE7skpG";
+                    String supabaseUrl = Constants.SUPABASE_BASE_URL + "Book_Details?select=id,book_name,book_author,genre,release_year,max_pages,cover,Book_Progress(current_page)";
 
                     Request request = new Request.Builder()
                             .url(supabaseUrl)
-                            .addHeader("apikey", apiKey)
-                            .addHeader("Authorization", "Bearer " + apiKey)
+                            .addHeader("apikey", Constants.SUPABASE_API_KEY)
+                            .addHeader("Authorization", "Bearer " + Constants.SUPABASE_API_KEY)
                             .build();
 
                     Response response = client.newCall(request).execute();
@@ -186,8 +208,8 @@ public class HomeFragment extends Fragment {
 
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject bookObj = jsonArray.getJSONObject(i);
-
                             BookItemHome item = new BookItemHome();
+                            item.setId(bookObj.optLong("id"));
                             item.setBook_name(bookObj.optString("book_name", "Ismeretlen cím"));
                             item.setBook_author(bookObj.optString("book_author", "Ismeretlen szerző"));
                             item.setGenre(bookObj.optString("genre","Ismeretlen"));
@@ -333,5 +355,54 @@ public class HomeFragment extends Fragment {
             tvEmptySearchHome.setVisibility(View.GONE);
             rvMyBooksHome.setVisibility(View.VISIBLE);
         }
+    }
+
+    private void deleteBook(BookItemHome book, int position){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    OkHttpClient client = new OkHttpClient();
+
+                    String supabaseUrl = Constants.SUPABASE_BASE_URL + "Book_Details?id=eq." + book.getId();
+
+                    Request request = new Request.Builder()
+                            .url(supabaseUrl)
+                            .addHeader("apikey", Constants.SUPABASE_API_KEY)
+                            .addHeader("Authorization", "Bearer" + Constants.SUPABASE_API_KEY)
+                            .delete()
+                            .build();
+
+                    Response response = client.newCall(request).execute();
+
+                    if (response.isSuccessful()) {
+                        if (getActivity() != null) {
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    fullBookList.remove(book);
+                                    displayBookList.remove(position);
+                                    bookAdapterHome.notifyItemRemoved(position);
+                                    bookAdapterHome.notifyItemRangeChanged(position, displayBookList.size());
+
+                                    Toast.makeText(requireContext(), "Könyv sikeresen törölve!", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
+                    } else {
+                        if (getActivity() != null) {
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(requireContext(), "Sikertelen törlés!", Toast.LENGTH_LONG).show();
+                                }
+                            });
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
 }

@@ -7,25 +7,46 @@
 
     <ImageView
         android:id="@+id/ivBookCover"
-        android:layout_width="140dp"
-        android:layout_height="180dp"
+        android:layout_width="110dp"
+        android:layout_height="160dp"
         android:src="@drawable/ketarcu"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:scaleType="centerCrop" />
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:orientation="vertical"
         android:paddingStart="12dp">
 
-        <TextView
-            android:id="@+id/tvTitle"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:text="Én, a kéteracú" />
+            android:orientation="horizontal"
+            android:gravity="top">
+
+            <TextView
+                android:id="@+id/tvTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:maxLines="2"
+                android:ellipsize="end"
+                android:text="Én, a kéteracú" />
+
+            <ImageButton
+                android:id="@+id/btnDelete"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginStart="8dp"
+                android:background="@drawable/bg_red_circle"
+                android:src="@drawable/baseline_delete_24"
+                app:tint="@color/white"
+                android:padding="6dp"
+                android:elevation="4dp" />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/tvAuthor"
@@ -40,14 +61,28 @@
             android:text="Kiadási év: 2026"
             android:textSize="12sp" />
 
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="12dp" />
+
         <ProgressBar
             android:id="@+id/pbProgress"
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="16dp"
             android:max="100"
             android:progress="90"
             android:progressTint="@color/green" />
+
+        <TextView
+            android:id="@+id/tv_Percentage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="90%"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+
     </LinearLayout>
 </LinearLayout>

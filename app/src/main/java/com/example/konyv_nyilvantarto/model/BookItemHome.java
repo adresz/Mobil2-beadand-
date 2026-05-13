@@ -3,6 +3,7 @@ package com.example.konyv_nyilvantarto.model;
 import java.util.Date;
 
 public class BookItemHome {
+    private long id;
     private String book_name;
     private String book_author;
     private Date release_year;
@@ -14,7 +15,7 @@ public class BookItemHome {
     public BookItemHome() {
     }
 
-    public BookItemHome(String book_name, String book_author, Date release_year, int max_pages, int current_page, String cover, String genre) {
+    public BookItemHome(long id, String book_name, String book_author, Date release_year, int max_pages, int current_page, String cover, String genre) {
         this.book_name = book_name;
         this.book_author = book_author;
         this.release_year = release_year;
@@ -22,6 +23,15 @@ public class BookItemHome {
         this.current_page = current_page;
         this.cover = cover;
         this.genre = genre;
+        this.id = id;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getBook_name() {
