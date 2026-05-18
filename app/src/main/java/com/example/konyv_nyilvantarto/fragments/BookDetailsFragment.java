@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RatingBar;
+import android.widget.TextView;
 
 import com.example.konyv_nyilvantarto.R;
 
@@ -33,6 +34,8 @@ public class BookDetailsFragment extends Fragment {
     private EditText etEndDateD;
     private EditText etStartDateD;
     private EditText etOpinionD;
+
+    private TextView tvTitleD;
 
     public BookDetailsFragment() {
         // Required empty public constructor
@@ -76,6 +79,7 @@ public class BookDetailsFragment extends Fragment {
         etStartDateD = view.findViewById(R.id.etStartDateD);
         etEndDateD = view.findViewById(R.id.etEndDateD);
         etOpinionD = view.findViewById(R.id.etOpinionD);
+        tvTitleD = view.findViewById(R.id.tvTitleD);
 
         etBookTitleD.setText(getArguments().getString("title"));
         etAuthorD.setText(getArguments().getString("author"));
@@ -87,6 +91,7 @@ public class BookDetailsFragment extends Fragment {
         etStartDateD.setText(getArguments().getString("start_date"));
         etEndDateD.setText(getArguments().getString("finish_date"));
         etOpinionD.setText(getArguments().getString("note"));
+        tvTitleD.setText(getArguments().getString("title"));
         etMaxPagesD.setText(etPagesD.getText());
 
         String imageUrl = getArguments().getString("cover");
