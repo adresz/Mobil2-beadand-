@@ -6,6 +6,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,6 +17,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RatingBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,6 +43,9 @@ public class BookDetailsFragment extends Fragment {
     private EditText etOpinionD;
     private TextView tvTitleD;
     private Button btnSaveD;
+    private Spinner spStateD;
+
+    private Button btnCancelD;
     private long bookId = -1L;
 
     public BookDetailsFragment() {
@@ -85,6 +91,7 @@ public class BookDetailsFragment extends Fragment {
         etOpinionD = view.findViewById(R.id.etOpinionD);
         tvTitleD = view.findViewById(R.id.tvTitleD);
         btnSaveD = view.findViewById(R.id.btnSaveD);
+        btnCancelD = view.findViewById(R.id.btnCancelD);
 
         if (getArguments() != null) {
             bookId = getArguments().getLong("id", -1L);
@@ -99,6 +106,7 @@ public class BookDetailsFragment extends Fragment {
             etEndDateD.setText(getArguments().getString("finish_date"));
             etOpinionD.setText(getArguments().getString("note"));
             tvTitleD.setText(getArguments().getString("title"));
+
             tvMaxPagesD.setText(etPagesD.getText());
 
             String imageUrl = getArguments().getString("cover");

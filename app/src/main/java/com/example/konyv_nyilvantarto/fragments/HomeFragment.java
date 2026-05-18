@@ -99,7 +99,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onBookClick(BookItemHome book) {
                 Bundle bundle = new Bundle();
-
+                bundle.putString("type",book.getType());
                 bundle.putLong("id", book.getId());
                 bundle.putString("title", book.getBook_name());
                 bundle.putString("author", book.getBook_author());
@@ -203,7 +203,7 @@ public class HomeFragment extends Fragment {
                 try {
                     OkHttpClient client = new OkHttpClient();
 
-                    String supabaseUrl = Constants.SUPABASE_BASE_URL + "Book_Details?select=id,book_name,book_author,genre,note,start_date,finish_date,release_year,max_pages,cover,rating,Book_Progress(current_page)";
+                    String supabaseUrl = Constants.SUPABASE_BASE_URL + "Book_Details?select=id,book_name,book_author,genre,note,start_date,finish_date,release_year,max_pages,cover,rating,Book_Progress(current_page),type:Borrowing(type)";
 
                     Request request = new Request.Builder()
                             .url(supabaseUrl)
@@ -222,13 +222,20 @@ public class HomeFragment extends Fragment {
 
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject bookObj = jsonArray.getJSONObject(i);
+                            System.out.println(bookObj.toString(2));
                             BookItemHome item = new BookItemHome();
                             item.setId(bookObj.optLong("id"));
                             item.setBook_name(bookObj.optString("book_name", "Ismeretlen cím"));
                             item.setBook_author(bookObj.optString("book_author", "Ismeretlen szerző"));
                             item.setGenre(bookObj.optString("genre","Ismeretlen"));
                             item.setNote(bookObj.optString("note","Nincs"));
+                            JSONObject typeObj = bookObj.optJSONObject("type");
 
+                            if (typeObj != null) {
+                                item.setType(typeObj.optString("type", "own"));
+                            } else {
+                                item.setType("own");
+                            }
                             item.setRating((float) bookObj.optDouble("rating",0.0));
                             String startDate = bookObj.optString("start_date", "");
                             if (!startDate.isEmpty() && !startDate.equals("null")) {

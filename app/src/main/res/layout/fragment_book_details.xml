@@ -31,6 +31,8 @@
         android:id="@+id/svContentD"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:clipToPadding="false"
+        android:paddingBottom="80dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -164,51 +166,6 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/tvStateD"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:text="Állapot:"
-                android:textSize="15sp"
-                app:layout_constraintBottom_toBottomOf="@+id/spStateD"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linlayProgressD" />
-
-            <Spinner
-                android:id="@+id/spStateD"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="40dp"
-                android:layout_marginTop="30dp"
-                android:minHeight="48dp"
-                app:layout_constraintEnd_toEndOf="@+id/linlayProgressD"
-                app:layout_constraintStart_toEndOf="@+id/tvStateD"
-                app:layout_constraintTop_toBottomOf="@+id/linlayProgressD" />
-
-            <TextView
-                android:id="@+id/tvBorrowUntilD"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Eddig:"
-                android:textSize="15sp"
-                app:layout_constraintBottom_toBottomOf="@+id/etBorrowDateD"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/etBorrowDateD" />
-
-            <EditText
-                android:id="@+id/etBorrowDateD"
-                android:layout_width="0dp"
-                android:layout_height="48dp"
-                android:layout_marginTop="30dp"
-                android:drawableEnd="@android:drawable/ic_menu_my_calendar"
-                android:focusable="false"
-                android:hint="Dátum"
-                android:paddingHorizontal="12dp"
-                app:layout_constraintEnd_toEndOf="@+id/spStateD"
-                app:layout_constraintStart_toStartOf="@+id/spStateD"
-                app:layout_constraintTop_toBottomOf="@+id/spStateD" />
-
-            <TextView
                 android:id="@+id/tvStartD"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -222,14 +179,15 @@
                 android:id="@+id/etStartDateD"
                 android:layout_width="0dp"
                 android:layout_height="48dp"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="35dp"
+                android:layout_marginStart="40dp"
                 android:drawableEnd="@android:drawable/ic_menu_my_calendar"
                 android:focusable="false"
                 android:hint="Dátum"
                 android:paddingHorizontal="12dp"
-                app:layout_constraintEnd_toEndOf="@+id/etBorrowDateD"
-                app:layout_constraintStart_toStartOf="@+id/etBorrowDateD"
-                app:layout_constraintTop_toBottomOf="@+id/etBorrowDateD" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/tvStartD"
+                app:layout_constraintTop_toBottomOf="@+id/linlayProgressD" />
 
             <TextView
                 android:id="@+id/tvEndDateD"
@@ -273,7 +231,7 @@
                 android:gravity="start|top"
                 android:inputType="textMultiLine"
                 android:textSize="15sp"
-                app:layout_constraintEnd_toEndOf="@+id/etEndDateD"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvOpinionD" />
 
@@ -282,23 +240,11 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
-                android:layout_marginBottom="100dp"
                 android:text="Save"
                 android:textSize="16sp"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/etOpinionD"/>
-
-            <Button
-                android:id="@+id/btnCancelD"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:text="Cancel"
-                app:layout_constraintEnd_toEndOf="@+id/btnSaveD"
-                app:layout_constraintStart_toStartOf="@+id/btnSaveD"
-                app:layout_constraintTop_toBottomOf="@+id/btnSaveD" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

@@ -3,9 +3,9 @@
 
 
     <string-array name="BookState">
-        <item>Vásárolt</item>
-        <item>Kölcsön vett</item>
-        <item>Kölcsön adott</item>
+        <item>own</item>
+        <item>borrowed</item>
+        <item>lent</item>
     </string-array>
     <string-array name="HomeSpinner">
         <item>Cím ↑</item>
