@@ -100,6 +100,7 @@ public class HomeFragment extends Fragment {
             public void onBookClick(BookItemHome book) {
                 Bundle bundle = new Bundle();
 
+                bundle.putLong("id", book.getId());
                 bundle.putString("title", book.getBook_name());
                 bundle.putString("author", book.getBook_author());
                 bundle.putString("cover", book.getCover());
@@ -244,6 +245,16 @@ public class HomeFragment extends Fragment {
                                 try {
                                     java.text.SimpleDateFormat format = new java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault());
                                     item.setFinish_date(format.parse(finishDate));
+                                } catch (java.text.ParseException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+
+                            String releaseYearStr = bookObj.optString("release_year", "");
+                            if (!releaseYearStr.isEmpty() && !releaseYearStr.equals("null")) {
+                                try {
+                                    java.text.SimpleDateFormat format = new java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault());
+                                    item.setRelease_year(format.parse(releaseYearStr));
                                 } catch (java.text.ParseException e) {
                                     e.printStackTrace();
                                 }
