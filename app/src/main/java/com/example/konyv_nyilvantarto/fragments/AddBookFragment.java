@@ -44,6 +44,9 @@ public class AddBookFragment extends Fragment {
     private LinearLayout linlayUploadAdd;
     private TextView tvUploadAdd;
 
+    private Uri imageUri = null;
+    private String selectedFile = "";
+
     private static final String SUPABASE_URL = "https://plohvgiccntmsgzyszrl.supabase.co/";
     private static final String API_KEY = "sb_publishable_cuiKHkTKKdAHSnMkBcwghQ_rKE7skpG";
 
@@ -55,6 +58,8 @@ public class AddBookFragment extends Fragment {
                     if (selectedFileUri != null) {
                         String fileName = getFileName(selectedFileUri);
                         if (tvUploadAdd != null) {
+                            imageUri = selectedFileUri;
+                            selectedFile = fileName;
                             tvUploadAdd.setText(fileName);
                         }
                     }
@@ -119,49 +124,109 @@ public class AddBookFragment extends Fragment {
                 Toast.makeText(getContext(), "Minden mező kitöltése kötelező", Toast.LENGTH_SHORT).show();
             }
             else{
-                FavoriteBook book = new FavoriteBook(
-                        etTitleAdd.getText().toString(),
-                        etAuthorAdd.getText().toString(),
-                        "https://plohvgiccntmsgzyszrl.supabase.co/storage/v1/object/public/book_covers/nopicture.png",
-                        Integer.parseInt(etPagesAdd.getText().toString()),
-                        etReleaseAdd.getText().toString(),
-                        etGenreAdd.getText().toString()
-                );
-
-                BookApi api = RetrofitClient
-                        .getClient(SUPABASE_URL)
-                        .create(BookApi.class);
-
-                api.saveBookToSupabase(
-                        API_KEY,
-                        "Bearer " + API_KEY,
-                        book
-                ).enqueue(new Callback<Void>() {
-
-                    @Override
-                    public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
-                        if(response.isSuccessful()) {
-                            etTitleAdd.setText("");
-                            etAuthorAdd.setText("");
-                            etReleaseAdd.setText("");
-                            etPagesAdd.setText("");
-                            etGenreAdd.setText("");
-
-                            if (tvUploadAdd != null) {
-                                tvUploadAdd.setText("Kép hozzáadása");
-                            }
-
-                            Toast.makeText(getContext(), "Mentve!", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(getContext(), "Hiba: " + response.code(), Toast.LENGTH_SHORT).show();
+                if (imageUri != null) {
+                    try {
+                        java.io.InputStream inputStream = getContext().getContentResolver().openInputStream(imageUri);
+                        java.io.ByteArrayOutputStream byteBuffer = new java.io.ByteArrayOutputStream();
+                        byte[] buffer = new byte[1024];
+                        int len;
+                        while ((len = inputStream.read(buffer)) != -1) {
+                            byteBuffer.write(buffer, 0, len);
                         }
-                    }
+                        byte[] bytes = byteBuffer.toByteArray();
 
-                    @Override
-                    public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
-                        Toast.makeText(getContext(), "Hálózati hiba!", Toast.LENGTH_SHORT).show();
+                        okhttp3.RequestBody requestFile = okhttp3.RequestBody.create(okhttp3.MediaType.parse(getContext().getContentResolver().getType(imageUri)), bytes);
+                        okhttp3.MultipartBody.Part body = okhttp3.MultipartBody.Part.createFormData("file", selectedFile, requestFile);
+
+                        String uniqueFileName = System.currentTimeMillis() + "_" + selectedFile;
+
+                        BookApi api = RetrofitClient.getClient(SUPABASE_URL).create(BookApi.class);
+
+                        api.uploadBookCover(API_KEY, "Bearer " + API_KEY, uniqueFileName, body).enqueue(new Callback<okhttp3.ResponseBody>() {
+                            @Override
+                            public void onResponse(@NonNull Call<okhttp3.ResponseBody> call, @NonNull Response<okhttp3.ResponseBody> response) {
+                                if (response.isSuccessful()) {
+                                    String generatedImageUrl = SUPABASE_URL + "storage/v1/object/public/book_covers/" + uniqueFileName;
+
+                                    // Mentés az adatbázisba a frissen feltöltött kép URL-jével
+                                    FavoriteBook book = new FavoriteBook(
+                                            etTitleAdd.getText().toString(),
+                                            etAuthorAdd.getText().toString(),
+                                            generatedImageUrl,
+                                            Integer.parseInt(etPagesAdd.getText().toString()),
+                                            etReleaseAdd.getText().toString(),
+                                            etGenreAdd.getText().toString()
+                                    );
+
+                                    api.saveBookToSupabase(API_KEY, "Bearer " + API_KEY, book).enqueue(new Callback<Void>() {
+                                        @Override
+                                        public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> dbResponse) {
+                                            if(dbResponse.isSuccessful()) {
+                                                etTitleAdd.setText("");
+                                                etAuthorAdd.setText("");
+                                                etReleaseAdd.setText("");
+                                                etPagesAdd.setText("");
+                                                etGenreAdd.setText("");
+                                                imageUri = null;
+                                                selectedFile = "";
+                                                if (tvUploadAdd != null) tvUploadAdd.setText("Kép hozzáadása");
+                                                Toast.makeText(getContext(), "Mentve!", Toast.LENGTH_SHORT).show();
+                                            } else {
+                                                Toast.makeText(getContext(), "Adatbázis hiba: " + dbResponse.code(), Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+                                        @Override
+                                        public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
+                                            Toast.makeText(getContext(), "Adatbázis hálózati hiba!", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                                } else {
+                                    Toast.makeText(getContext(), "Kép feltöltési hiba: " + response.code(), Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                            @Override
+                            public void onFailure(@NonNull Call<okhttp3.ResponseBody> call, @NonNull Throwable t) {
+                                Toast.makeText(getContext(), "Kép feltöltési hálózati hiba!", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Toast.makeText(getContext(), "Fájl beolvasási hiba", Toast.LENGTH_SHORT).show();
                     }
-                });
+                } else {
+                    // Ha nincs kiválasztott kép, azonnal mentünk a nopicture.png-vel
+                    FavoriteBook book = new FavoriteBook(
+                            etTitleAdd.getText().toString(),
+                            etAuthorAdd.getText().toString(),
+                            "https://plohvgiccntmsgzyszrl.supabase.co/storage/v1/object/public/book_covers/nopicture.png",
+                            Integer.parseInt(etPagesAdd.getText().toString()),
+                            etReleaseAdd.getText().toString(),
+                            etGenreAdd.getText().toString()
+                    );
+
+                    BookApi api = RetrofitClient.getClient(SUPABASE_URL).create(BookApi.class);
+
+                    api.saveBookToSupabase(API_KEY, "Bearer " + API_KEY, book).enqueue(new Callback<Void>() {
+                        @Override
+                        public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
+                            if(response.isSuccessful()) {
+                                etTitleAdd.setText("");
+                                etAuthorAdd.setText("");
+                                etReleaseAdd.setText("");
+                                etPagesAdd.setText("");
+                                etGenreAdd.setText("");
+                                if (tvUploadAdd != null) tvUploadAdd.setText("Kép hozzáadása");
+                                Toast.makeText(getContext(), "Mentve!", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(getContext(), "Hiba: " + response.code(), Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                        @Override
+                        public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
+                            Toast.makeText(getContext(), "Hálózati hiba!", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
             }
         });
     }
