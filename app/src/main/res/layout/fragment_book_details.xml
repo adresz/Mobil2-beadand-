@@ -153,8 +153,8 @@
                     android:text="/"
                     android:textSize="20sp" />
 
-                <EditText
-                    android:id="@+id/etMaxPagesD"
+                <TextView
+                    android:id="@+id/tvMaxPagesD"
                     android:layout_width="60dp"
                     android:layout_height="50dp"
                     android:layout_weight="1"
