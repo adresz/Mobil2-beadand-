@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 
 import com.example.konyv_nyilvantarto.R;
 
@@ -24,6 +25,7 @@ public class BookDetailsFragment extends Fragment {
     private EditText etReadPagesD;
     private EditText etMaxPagesD;
 
+    private RatingBar rbStarRatingD;
     private EditText etGenreD;
     private ImageView ivBookCoverD;
 
@@ -61,13 +63,18 @@ public class BookDetailsFragment extends Fragment {
         etReadPagesD = view.findViewById(R.id.etReadPagesD);
         etMaxPagesD = view.findViewById(R.id.etMaxPagesD);
         etGenreD = view.findViewById(R.id.etGenreD);
+        etMaxPagesD = view.findViewById(R.id.etMaxPagesD);
+        rbStarRatingD = view.findViewById(R.id.rbStarRatingD);
 
         ivBookCoverD = view.findViewById(R.id.ivBookCoverD);
 
-        etBookTitleD.setText("Cím: " + getArguments().getString("title"));
+        etBookTitleD.setText(getArguments().getString("title"));
         etAuthorD.setText(getArguments().getString("author"));
         etReleaseD.setText(getArguments().getString("year"));
         etGenreD.setText(getArguments().getString("genre"));
         etPagesD.setText(String.valueOf(getArguments().getInt("maxPages")));
+        rbStarRatingD.setRating(getArguments().getFloat("rating", 0f));
+        etMaxPagesD.setText(etPagesD.getText());
+
     }
 }

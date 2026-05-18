@@ -11,11 +11,14 @@ public class BookItemHome {
     private int current_page;
     private String cover;
     private String genre;
+    private float rating;
+
+    private String note;
 
     public BookItemHome() {
     }
 
-    public BookItemHome(long id, String book_name, String book_author, Date release_year, int max_pages, int current_page, String cover, String genre) {
+    public BookItemHome(long id, String book_name, String book_author, Date release_year, int max_pages, int current_page, String cover, String genre, float rating,  String note) {
         this.book_name = book_name;
         this.book_author = book_author;
         this.release_year = release_year;
@@ -24,6 +27,8 @@ public class BookItemHome {
         this.cover = cover;
         this.genre = genre;
         this.id = id;
+        this.rating = rating;
+        this.note = note;
     }
 
     public long getId() {
@@ -88,5 +93,22 @@ public class BookItemHome {
     public void setGenre(String genre) {
         this.genre = genre;
     }
+
+    public float getRating() {
+        return rating;
+    }
+
+    public void setRating(float rating) {
+        this.rating = rating;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
+    }
+
 
 }

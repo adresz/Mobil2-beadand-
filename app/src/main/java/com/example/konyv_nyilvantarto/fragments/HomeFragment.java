@@ -104,6 +104,7 @@ public class HomeFragment extends Fragment {
                 bundle.putString("author", book.getBook_author());
                 bundle.putString("cover", book.getCover());
                 bundle.putString("genre", book.getGenre());
+                bundle.putFloat("rating", book.getRating());
 
                 if(book.getRelease_year() != null){
                     java.text.SimpleDateFormat sdf =
@@ -189,7 +190,7 @@ public class HomeFragment extends Fragment {
                 try {
                     OkHttpClient client = new OkHttpClient();
 
-                    String supabaseUrl = Constants.SUPABASE_BASE_URL + "Book_Details?select=id,book_name,book_author,genre,release_year,max_pages,cover,Book_Progress(current_page)";
+                    String supabaseUrl = Constants.SUPABASE_BASE_URL + "Book_Details?select=id,book_name,book_author,genre,release_year,max_pages,cover,rating,Book_Progress(current_page)";
 
                     Request request = new Request.Builder()
                             .url(supabaseUrl)
@@ -213,6 +214,7 @@ public class HomeFragment extends Fragment {
                             item.setBook_name(bookObj.optString("book_name", "Ismeretlen cím"));
                             item.setBook_author(bookObj.optString("book_author", "Ismeretlen szerző"));
                             item.setGenre(bookObj.optString("genre","Ismeretlen"));
+                            item.setRating((float) bookObj.optDouble("rating",0.0));
 
                             String dateStr = bookObj.optString("release_year", "");
                             if (!dateStr.isEmpty()) {
