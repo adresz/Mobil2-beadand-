@@ -1,5 +1,6 @@
 package com.example.konyv_nyilvantarto.model;
 
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 public class BookItemHome {
@@ -15,10 +16,13 @@ public class BookItemHome {
 
     private String note;
 
+    private Date start_date;
+    private Date finish_date;
+
     public BookItemHome() {
     }
 
-    public BookItemHome(long id, String book_name, String book_author, Date release_year, int max_pages, int current_page, String cover, String genre, float rating,  String note) {
+    public BookItemHome(long id, String book_name, String book_author, Date release_year, int max_pages, int current_page, String cover, String genre, float rating,  String note, Date start_date, Date finish_date) {
         this.book_name = book_name;
         this.book_author = book_author;
         this.release_year = release_year;
@@ -110,5 +114,20 @@ public class BookItemHome {
         this.note = note;
     }
 
+    public Date getFinish_date() {
+        return finish_date;
+    }
+
+    public void setFinish_date(Date finish_date) {
+        this.finish_date = finish_date;
+    }
+
+    public Date getStart_date() {
+        return start_date;
+    }
+
+    public void setStart_date(Date start_date) {
+        this.start_date = start_date;
+    }
 
 }

@@ -1,5 +1,6 @@
 package com.example.konyv_nyilvantarto.fragments;
 
+import android.media.Image;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -16,6 +17,8 @@ import android.widget.RatingBar;
 
 import com.example.konyv_nyilvantarto.R;
 
+import java.security.PrivateKey;
+
 public class BookDetailsFragment extends Fragment {
 
     private EditText etBookTitleD;
@@ -24,10 +27,12 @@ public class BookDetailsFragment extends Fragment {
     private EditText etPagesD;
     private EditText etReadPagesD;
     private EditText etMaxPagesD;
-
     private RatingBar rbStarRatingD;
     private EditText etGenreD;
     private ImageView ivBookCoverD;
+    private EditText etEndDateD;
+    private EditText etStartDateD;
+    private EditText etOpinionD;
 
     public BookDetailsFragment() {
         // Required empty public constructor
@@ -65,16 +70,31 @@ public class BookDetailsFragment extends Fragment {
         etGenreD = view.findViewById(R.id.etGenreD);
         etMaxPagesD = view.findViewById(R.id.etMaxPagesD);
         rbStarRatingD = view.findViewById(R.id.rbStarRatingD);
-
+        etReadPagesD = view.findViewById(R.id.etReadPagesD);
+        etReadPagesD = view.findViewById(R.id.etReadPagesD);
         ivBookCoverD = view.findViewById(R.id.ivBookCoverD);
+        etStartDateD = view.findViewById(R.id.etStartDateD);
+        etEndDateD = view.findViewById(R.id.etEndDateD);
+        etOpinionD = view.findViewById(R.id.etOpinionD);
 
         etBookTitleD.setText(getArguments().getString("title"));
         etAuthorD.setText(getArguments().getString("author"));
         etReleaseD.setText(getArguments().getString("year"));
         etGenreD.setText(getArguments().getString("genre"));
         etPagesD.setText(String.valueOf(getArguments().getInt("maxPages")));
+        etReadPagesD.setText(String.valueOf(getArguments().get("currentPages")));
         rbStarRatingD.setRating(getArguments().getFloat("rating", 0f));
+        etStartDateD.setText(getArguments().getString("start_date"));
+        etEndDateD.setText(getArguments().getString("finish_date"));
+        etOpinionD.setText(getArguments().getString("note"));
         etMaxPagesD.setText(etPagesD.getText());
+
+        String imageUrl = getArguments().getString("cover");
+        if (imageUrl != null && !imageUrl.isEmpty()) {
+            com.bumptech.glide.Glide.with(this)
+                    .load(imageUrl)
+                    .into(ivBookCoverD);
+        }
 
     }
 }

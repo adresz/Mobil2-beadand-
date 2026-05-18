@@ -105,6 +105,8 @@ public class HomeFragment extends Fragment {
                 bundle.putString("cover", book.getCover());
                 bundle.putString("genre", book.getGenre());
                 bundle.putFloat("rating", book.getRating());
+                bundle.putString("note",book.getNote());
+                bundle.putString("book_cover",book.getCover());
 
                 if(book.getRelease_year() != null){
                     java.text.SimpleDateFormat sdf =
@@ -115,6 +117,16 @@ public class HomeFragment extends Fragment {
 
                 bundle.putInt("maxPages", book.getMax_pages());
                 bundle.putInt("currentPages", book.getCurrent_page());
+
+                java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault());
+
+                if (book.getStart_date() != null) {
+                    bundle.putString("start_date", sdf.format(book.getStart_date()));
+                }
+                if (book.getFinish_date() != null) {
+                    bundle.putString("finish_date", sdf.format(book.getFinish_date()));
+                }
+
 
                 BookDetailsFragment fragment = new BookDetailsFragment();
                 fragment.setArguments(bundle);
@@ -190,7 +202,7 @@ public class HomeFragment extends Fragment {
                 try {
                     OkHttpClient client = new OkHttpClient();
 
-                    String supabaseUrl = Constants.SUPABASE_BASE_URL + "Book_Details?select=id,book_name,book_author,genre,release_year,max_pages,cover,rating,Book_Progress(current_page)";
+                    String supabaseUrl = Constants.SUPABASE_BASE_URL + "Book_Details?select=id,book_name,book_author,genre,note,start_date,finish_date,release_year,max_pages,cover,rating,Book_Progress(current_page)";
 
                     Request request = new Request.Builder()
                             .url(supabaseUrl)
@@ -214,14 +226,24 @@ public class HomeFragment extends Fragment {
                             item.setBook_name(bookObj.optString("book_name", "Ismeretlen cím"));
                             item.setBook_author(bookObj.optString("book_author", "Ismeretlen szerző"));
                             item.setGenre(bookObj.optString("genre","Ismeretlen"));
-                            item.setRating((float) bookObj.optDouble("rating",0.0));
+                            item.setNote(bookObj.optString("note","Nincs"));
 
-                            String dateStr = bookObj.optString("release_year", "");
-                            if (!dateStr.isEmpty()) {
+                            item.setRating((float) bookObj.optDouble("rating",0.0));
+                            String startDate = bookObj.optString("start_date", "");
+                            if (!startDate.isEmpty() && !startDate.equals("null")) {
                                 try {
                                     java.text.SimpleDateFormat format = new java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault());
-                                    java.util.Date dateObj = format.parse(dateStr);
-                                    item.setRelease_year(dateObj);
+                                    item.setStart_date(format.parse(startDate));
+                                } catch (java.text.ParseException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+
+                            String finishDate = bookObj.optString("finish_date", "");
+                            if (!finishDate.isEmpty() && !finishDate.equals("null")) {
+                                try {
+                                    java.text.SimpleDateFormat format = new java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault());
+                                    item.setFinish_date(format.parse(finishDate));
                                 } catch (java.text.ParseException e) {
                                     e.printStackTrace();
                                 }
