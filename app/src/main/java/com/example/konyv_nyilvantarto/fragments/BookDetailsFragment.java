@@ -91,7 +91,6 @@ public class BookDetailsFragment extends Fragment {
         etOpinionD = view.findViewById(R.id.etOpinionD);
         tvTitleD = view.findViewById(R.id.tvTitleD);
         btnSaveD = view.findViewById(R.id.btnSaveD);
-        btnCancelD = view.findViewById(R.id.btnCancelD);
 
         if (getArguments() != null) {
             bookId = getArguments().getLong("id", -1L);
