@@ -22,8 +22,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.konyv_nyilvantarto.R;
+import com.google.android.material.datepicker.MaterialDatePicker;
 
 import java.security.PrivateKey;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 import okhttp3.OkHttpClient;
 
@@ -114,6 +118,13 @@ public class BookDetailsFragment extends Fragment {
                         .load(imageUrl)
                         .into(ivBookCoverD);
             }
+
+            etEndDateD.setOnClickListener(v->{
+                datePickerPopUp(etEndDateD);
+            });
+            etStartDateD.setOnClickListener(v->{
+                datePickerPopUp(etStartDateD);
+            });
         }
 
         btnSaveD.setOnClickListener(v -> saveBookData());
@@ -135,7 +146,7 @@ public class BookDetailsFragment extends Fragment {
         int currentPages = 0;
 
         try {
-            String maxP = tvMaxPagesD.getText().toString().trim();
+            String maxP = etPagesD.getText().toString().trim();
             String currP = etReadPagesD.getText().toString().trim();
 
             if (!maxP.isEmpty()) maxPages = Integer.parseInt(maxP);
@@ -201,6 +212,16 @@ public class BookDetailsFragment extends Fragment {
             e.printStackTrace();
             Toast.makeText(getContext(), "Hiba a JSON összeállításánál!", Toast.LENGTH_SHORT).show();
         }
+    }
+    private void datePickerPopUp(EditText et) {
+        MaterialDatePicker<Long> datePicker = MaterialDatePicker.Builder.datePicker().build();
+
+        datePicker.addOnPositiveButtonClickListener(selection -> {
+            String formattedDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date(selection));
+            et.setText(formattedDate);
+        });
+
+        datePicker.show(getParentFragmentManager(), "DATE_PICKER");
     }
     private void updateBookProgress(OkHttpClient client, long bookId, int currentPages, String newTitle) {
         try {
